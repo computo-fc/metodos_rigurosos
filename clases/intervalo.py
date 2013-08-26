@@ -28,3 +28,28 @@ class Intervalo(object):
 
     def __add__(self, otro):
         return Intervalo(self.min + otro.min, self.max + otro.max)
+
+    def __sub__(self, otro):
+        return Intervalo(self.min - otro.max, self.max - otro.min)
+
+    def __mul__(self, otro):
+        S = []
+        S.append(self.min * otro.min)
+        S.append(self.min * otro.max)
+        S.append(self.max * otro.min)
+        S.append(self.max * otro.max)
+
+        return Intervalo(min(S), max(S))
+
+
+    def __div__(self, otro):
+        if otro.contains(0):
+            raise ZeroDivisionError("Interval dividing by contains 0.")
+
+        return self * otro.reciprocal()
+
+    def reciprocal(self):
+        return Intervalo(1.0 / self.max, 1.0 / self.min)
+
+    def contains(self, x):
+        return self.min <= x <= self.max
