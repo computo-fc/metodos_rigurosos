@@ -1,8 +1,4 @@
 class Intervalo(object):
-    # Docstring
-    """
-    Esta clase provee aritmetica de intervalos.
-    """
     def __init__(self, min, max=None):
         
         if max is None:
@@ -23,9 +19,8 @@ class Intervalo(object):
     def _repr_html_(self):
         return "[{}, {}]".format(self.min, self.max)
     
-#     def _repr_latex_(self):
-#         return "$[{}^{}]$".format(self.min, self.max)
+    # def _repr_latex_(self):
+    #     return "$[{}^{}]$".format(self.min, self.max)
 
     def __add__(self, otro):
-        return Intervalo(self.min + otro.min, self.max + otro.max)
-
+        return Intervalo(self.min+otro.min, self.max+otro.max)
