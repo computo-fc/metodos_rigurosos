@@ -1,3 +1,4 @@
+
 # Escribimos funciones con el nombre test_ALGO
 
 from intervalo import Intervalo
@@ -11,4 +12,13 @@ def test_adicion():
 
 	# Quiero checar que c, definido asi, esta bien:
 
-	assert c.lo == 3 and c.hi == 5
+	assert c.min == 3 and c.max == 5
+
+# Con esto checamos que la funcion igualdad funcione
+	
+def test_igualdad():
+    x = Intervalo(1,3)
+    y = Intervalo(1,3)
+    
+    # Checamos que x e y sean iguales
+    assert x == y

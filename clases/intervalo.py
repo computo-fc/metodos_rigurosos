@@ -24,3 +24,11 @@ class Intervalo(object):
 
     def __add__(self, otro):
         return Intervalo(self.min+otro.min, self.max+otro.max)
+
+                
+    # Esta es la funcion igualdad para intervalos
+    def __eq__(self, otro):
+        if self.min == otro.min and self.max == otro.max:
+            return True
+        else:
+            return False
