@@ -1,26 +1,47 @@
 class Intervalo(object):
-    def __init__(self, min, max=None):
+    # Docstring
+    """
+    Se define la clase 'Intervalo', y los m\'etodos para la aritm\'etica b\'asica de intervalos, 
+    es decir, suma, resta, multiplicaci\'on y divisi\'on. Se incluyen otras funciones
+    que ser\'an \'utiles.
+    """
+    def __init__(self,lo,hi=None):
+        """ 
+        Definimos las propiedades del objeto Intervalo a partir de sus bordes,
+        lo y hi, donde lo <= hi. En el caso en que el intervalo s\'olo tenga
+        un n\'umero, \'este se interpreta como un intervalo 'delgado' o 'degenerado'.
+        """
+        if hi is None:
+            hi = lo
+        elif (hi < lo):
+            lo, hi = hi, lo
         
-        if max is None:
-            max = min
-        
-        self.min = min
-        self.max = max
-        
+        self.lo = lo
+        self.hi = hi
         
     def __repr__(self):
-        #return "Intervalo(%s, %s)" % (self.min, self.max)
-        return "Intervalo({}, {})".format(self.min, self.max)
+        return "Intervalo ({},{})".format(self.lo,self.hi)
     
     def __str__(self):
-        return "[{}, {}]".format(self.min, self.max)
-        
-    # Para el IPython notebook:
-    def _repr_html_(self):
-        return "[{}, {}]".format(self.min, self.max)
-    
-    # def _repr_latex_(self):
-    #     return "$[{}^{}]$".format(self.min, self.max)
+        # Esta funci\'on sirve con 'print'
+        return "[{},{}]".format(self.lo,self.hi)
 
+    def _repr_html_(self):
+        return "[{}, {}]".format(self.lo, self.hi)
+    
+    def _repr_latex_(self):
+        return "$[{}^{}]$".format(self.lo, self.hi)
+
+    # Aqu\'i vienen las operaciones aritm\'eticas
     def __add__(self, otro):
-        return Intervalo(self.min+otro.min, self.max+otro.max)
+        """
+        Suma de intervalos
+        """
+        try:
+            return Intervalo(self.lo + otro.lo, self.hi + otro.hi)
+        except:
+            return self + Intervalo(otro)
+
+    def __radd__(self, otro):
+        return self + otro
+
