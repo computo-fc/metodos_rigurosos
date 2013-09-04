@@ -1,4 +1,4 @@
-
+# -*- coding: utf-8 -*-
 # Escribimos funciones con el nombre test_ALGO
 
 from intervalo import Intervalo
