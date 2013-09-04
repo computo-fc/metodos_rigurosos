@@ -1,42 +1,42 @@
 import numpy as np
 
 class Intervalo(object):
-    def __init__(self, min, max=None):
+    def __init__(self, lo, hi=None):
         
-        if max is None:
-            max = min
-        elif min > max:
-            min, max = max, min
+        if hi is None:
+            hi = lo
+        elif lo > hi:
+            lo, hi = hi, lo
         
-        self.min = min
-        self.max = max
+        self.lo = lo
+        self.hi = hi
         
         
     def __repr__(self):
-        #return "Intervalo(%s, %s)" % (self.min, self.max)
-        return "Intervalo({}, {})".format(self.min, self.max)
+        #return "Intervalo(%s, %s)" % (self.lo, self.hi)
+        return "Intervalo({}, {})".format(self.lo, self.hi)
     
     def __str__(self):
-        return "[{}, {}]".format(self.min, self.max)
+        return "[{}, {}]".format(self.lo, self.hi)
         
     # Para el IPython notebook:
     def _repr_html_(self):
-        return "[{}, {}]".format(self.min, self.max)
+        return "[{}, {}]".format(self.lo, self.hi)
     
     # def _repr_latex_(self):
-    #     return "$[{}^{}]$".format(self.min, self.max)
+    #     return "$[{}^{}]$".format(self.lo, self.hi)
     
     def __add__(self, otro):
-        return Intervalo(self.min+otro.min, self.max+otro.max)
+        return Intervalo(self.lo+otro.lo, self.hi+otro.hi)
         
     def __and__(self, otro):
         if not isinstance(otro,Intervalo):
             otro = Intervalo(otro)
-        if (self.min > otro.max) | (self.max < otro.min):
+        if (self.lo > otro.hi) | (self.hi < otro.lo):
             return None
         else:
-            a = np.max([self.min, otro.min])
-            b = np.min([self.max, otro.max])
+            a = np.hi([self.lo, otro.lo])
+            b = np.lo([self.hi, otro.hi])
             return Intervalo(a,b)
     
     def __rand__(self, otro):
