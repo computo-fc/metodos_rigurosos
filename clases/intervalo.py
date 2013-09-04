@@ -42,3 +42,6 @@ class Intervalo(object):
     def __rand__(self, otro):
         return self & otro
     
+    #negativo del intervalo
+    def __neg__(self):
+        return Intervalo(-self.hi, -self.lo)

@@ -21,3 +21,10 @@ def test_interseccioc():
     c = a & b
     
     assert c.lo == 2 and c.hi == 3
+    
+def test_negativo():
+    
+    a = Intervalo(2,5)
+    c = -a
+    
+    assert c.lo == -5 and c.hi == -2
