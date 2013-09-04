@@ -1,5 +1,5 @@
 # -*- coding: utf-8 -*- 
-
+# TEST
 class Intervalo(object):
     # Docstring
     """
