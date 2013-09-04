@@ -35,8 +35,8 @@ class Intervalo(object):
         if (self.lo > otro.hi) | (self.hi < otro.lo):
             return None
         else:
-            a = np.hi([self.lo, otro.lo])
-            b = np.lo([self.hi, otro.hi])
+            a = np.max([self.lo, otro.lo])
+            b = np.min([self.hi, otro.hi])
             return Intervalo(a,b)
     
     def __rand__(self, otro):
