@@ -1,15 +1,17 @@
+# -*- coding: utf-8 -*- 
+
 class Intervalo(object):
     # Docstring
     """
-    Se define la clase 'Intervalo', y los m\'etodos para la aritm\'etica b\'asica de intervalos, 
-    es decir, suma, resta, multiplicaci\'on y divisi\'on. Se incluyen otras funciones
-    que ser\'an \'utiles.
+    Se define la clase 'Intervalo', y los métodos para la aritmética básica de intervalos, 
+    es decir, suma, resta, multiplicación y división. Se incluyen otras funciones
+    que serán útiles.
     """
     def __init__(self,lo,hi=None):
         """ 
         Definimos las propiedades del objeto Intervalo a partir de sus bordes,
-        lo y hi, donde lo <= hi. En el caso en que el intervalo s\'olo tenga
-        un n\'umero, \'este se interpreta como un intervalo 'delgado' o 'degenerado'.
+        lo y hi, donde lo <= hi. En el caso en que el intervalo sólo tenga
+        un número, éste se interpreta como un intervalo 'delgado' o 'degenerado'.
         """
         if hi is None:
             hi = lo
@@ -23,7 +25,7 @@ class Intervalo(object):
         return "Intervalo ({},{})".format(self.lo,self.hi)
     
     def __str__(self):
-        # Esta funci\'on sirve con 'print'
+        # Esta función sirve con 'print'
         return "[{},{}]".format(self.lo,self.hi)
 
     def _repr_html_(self):
@@ -32,7 +34,7 @@ class Intervalo(object):
     def _repr_latex_(self):
         return "$[{}^{}]$".format(self.lo, self.hi)
 
-    # Aqu\'i vienen las operaciones aritm\'eticas
+    # Aquí vienen las operaciones aritméticas
     def __add__(self, otro):
         """
         Suma de intervalos
