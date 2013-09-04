@@ -11,7 +11,7 @@ def test_adicion():
 
 	# Quiero checar que c, definido asi, esta bien:
 
-	assert c.min == 3 and c.max == 5
+	assert c.lo == 3 and c.hi == 5
 	
 def test_interseccioc():
     
@@ -20,4 +20,4 @@ def test_interseccioc():
     
     c = a & b
     
-    assert c.min == 2 and c.max == 3
+    assert c.lo == 2 and c.hi == 3
