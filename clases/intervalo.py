@@ -54,5 +54,12 @@ class Intervalo(object):
             return self * Intervalo(otro)
 
     def __rmul__(self, otro):
-        return self * otro 
+        return self * otro
+
+    # Esta es la funcion igualdad para intervalos
+    def __eq__(self, otro):
+        if self.lo == otro.lo and self.hi == otro.hi:
+            return True
+        else:
+            return False
 
