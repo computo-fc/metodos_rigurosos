@@ -21,7 +21,7 @@ class Intervalo(object):
         self.hi = hi
         
     def __repr__(self):
-        return "Intervalo ({},{})".format(self.lo,self.hi)
+        return "Intervalo [{},{}]".format(self.lo,self.hi)
     
     def __str__(self):
         # Esta función sirve con 'print'
@@ -31,7 +31,7 @@ class Intervalo(object):
         return "[{}, {}]".format(self.lo, self.hi)
     
     def _repr_latex_(self):
-        return "$[{}^{}]$".format(self.lo, self.hi)
+        return "$[{}, {}]$".format(self.lo, self.hi)
 
     # Aquí vienen las operaciones aritméticas
     def __add__(self, otro):
@@ -63,3 +63,19 @@ class Intervalo(object):
         else:
             return False
 
+    def __and__(self, otro):
+        if not isinstance(otro,Intervalo):
+            otro = Intervalo(otro)
+        if (self.lo > otro.hi) | (self.hi < otro.lo):
+            return None
+        else:
+            a = max( self.lo, otro.lo )
+            b = min( self.hi, otro.hi )
+            return Intervalo(a,b)
+    
+    def __rand__(self, otro):
+        return self & otro
+    
+    #negativo del intervalo
+    def __neg__(self):
+        return Intervalo(-self.hi, -self.lo)
