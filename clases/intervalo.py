@@ -36,17 +36,7 @@ class Intervalo(object):
 
     # Aquí vienen las operaciones aritméticas
     def __add__(self, otro):
-<<<<<<< HEAD
-        return Intervalo(self.min+otro.min, self.max+otro.max)
 
-                
-    # Esta es la funcion igualdad para intervalos
-    def __eq__(self, otro):
-        if self.min == otro.min and self.max == otro.max:
-            return True
-        else:
-            return False
-=======
         """
         Suma de intervalos
         """
@@ -58,4 +48,10 @@ class Intervalo(object):
     def __radd__(self, otro):
         return self + otro
 
->>>>>>> 58474ee792603457ec53917897b3070f8bc6b55b
+                
+    # Esta es la funcion igualdad para intervalos
+    def __eq__(self, otro):
+        if self.lo== otro.lo and self.hi == otro.hi:
+            return True
+        else:
+            return False

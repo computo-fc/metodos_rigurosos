@@ -1,4 +1,4 @@
-
+# -*- coding: utf-8 -*-
 # Escribimos funciones con el nombre test_ALGO
 
 from intervalo import Intervalo
@@ -12,7 +12,7 @@ def test_adicion():
 
 	# Quiero checar que c, definido asi, esta bien:
 
-	assert c.min == 3 and c.max == 5
+	assert c.hi == 3 and c.lo == 5
 
 # Con esto checamos que la funcion igualdad funcione
 	
