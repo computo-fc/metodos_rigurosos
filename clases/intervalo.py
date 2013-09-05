@@ -79,3 +79,9 @@ class Intervalo(object):
     #negativo del intervalo
     def __neg__(self):
         return Intervalo(-self.hi, -self.lo)
+        
+    def __div__(self, otro):
+        if otro.lo <= 0 <= otro.hi:
+            raise ZeroDivisionError
+        else:
+            return Intervalo.__mul__(self,Intervalo(1./(otro.hi),1./(otro.lo)))

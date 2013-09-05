@@ -1,4 +1,3 @@
-
 # Escribimos funciones con el nombre test_ALGO
 
 from intervalo import Intervalo
@@ -51,6 +50,7 @@ def test_igualdad():
     # Checamos que x e y sean iguales
     assert x == y
 
+    # Otro test
     z = Intervalo(3)
     assert z == 3
 
@@ -64,10 +64,23 @@ def test_interseccion():
     assert c.lo == 2 and c.hi == 3
     d = b & 3
     assert d.lo == 3 and d.hi == 3
-    
+
 def test_negativo():
     
     a = Intervalo(2,5)
     c = -a
     
     assert c.lo == -5 and c.hi == -2
+
+def test_division():
+    a = Intervalo(1,2)
+    b = Intervalo(1./4,1./2)
+    c = a/b
+    assert c.lo==2 and c.hi==8
+    
+    # Otros tests
+    d = a/3
+    assert d.lo == 1./3 and d.hi==2./3
+    d = 3.0/a
+    assert d.lo == 3./2 and d.hi == 3.
+
