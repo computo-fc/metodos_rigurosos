@@ -51,8 +51,8 @@ def test_igualdad():
     assert x == y
 
     # Otro test
-    #z = Intervalo(3)
-    #assert z == 3
+    z = Intervalo(3)
+    assert z == 3
 
 def test_interseccion():
     
@@ -79,10 +79,10 @@ def test_division():
     assert c.lo==2 and c.hi==8
     
     # Otros tests
-    #d = a/3
-    #assert d.lo == 1./3 and d.hi==2./3
-    #d = 3.0/a
-    #assert d.lo == 3./2 and d.hi == 3.
+    d = a/3
+    assert d.lo == 1./3 and d.hi==2./3
+    d = 3.0/a
+    assert d.lo == 3./2 and d.hi == 3.
 
 def test_middle():
     '''
