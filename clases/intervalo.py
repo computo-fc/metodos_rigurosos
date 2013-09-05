@@ -1,7 +1,6 @@
 # -*- coding: utf-8 -*- 
 
 class Intervalo(object):
-    # Docstring
     """
     Se define la clase 'Intervalo', y los métodos para la aritmética básica de intervalos, 
     es decir, suma, resta, multiplicación y división. Se incluyen otras funciones
@@ -22,7 +21,7 @@ class Intervalo(object):
         self.hi = hi
         
     def __repr__(self):
-        return "Intervalo ({},{})".format(self.lo,self.hi)
+        return "Intervalo [{},{}]".format(self.lo,self.hi)
     
     def __str__(self):
         # Esta función sirve con 'print'
@@ -32,11 +31,14 @@ class Intervalo(object):
         return "[{}, {}]".format(self.lo, self.hi)
     
     def _repr_latex_(self):
-        return "$[{}^{}]$".format(self.lo, self.hi)
+        return "$[{}, {}]$".format(self.lo, self.hi)
 
     # Aquí vienen las operaciones aritméticas
     def __add__(self, otro):
+<<<<<<< HEAD
 
+=======
+>>>>>>> 69f82ed36ba603fc36ab9bd8837f37ff6e05a266
         """
         Suma de intervalos
         """
@@ -48,6 +50,7 @@ class Intervalo(object):
     def __radd__(self, otro):
         return self + otro
 
+<<<<<<< HEAD
                 
     # Esta es la funcion igualdad para intervalos
     def __eq__(self, otro):
@@ -55,3 +58,44 @@ class Intervalo(object):
             return True
         else:
             return False
+=======
+    def __mul__(self, otro):
+        try:
+            S=[self.lo*otro.lo , self.lo * otro.hi , self.hi * otro.lo , self.hi * otro.hi ]
+            return Intervalo( min(S), max(S) )
+        except:
+            return self * Intervalo(otro)
+
+    def __rmul__(self, otro):
+        return self * otro
+
+    # Esta es la funcion igualdad para intervalos
+    def __eq__(self, otro):
+        if self.lo == otro.lo and self.hi == otro.hi:
+            return True
+        else:
+            return False
+
+    def __and__(self, otro):
+        if not isinstance(otro,Intervalo):
+            otro = Intervalo(otro)
+        if (self.lo > otro.hi) | (self.hi < otro.lo):
+            return None
+        else:
+            a = max( self.lo, otro.lo )
+            b = min( self.hi, otro.hi )
+            return Intervalo(a,b)
+    
+    def __rand__(self, otro):
+        return self & otro
+    
+    #negativo del intervalo
+    def __neg__(self):
+        return Intervalo(-self.hi, -self.lo)
+        
+    def __div__(self, otro):
+        if otro.lo <= 0 <= otro.hi:
+            raise ZeroDivisionError
+        else:
+            return Intervalo.__mul__(self,Intervalo(1./(otro.hi),1./(otro.lo)))
+>>>>>>> 69f82ed36ba603fc36ab9bd8837f37ff6e05a266
