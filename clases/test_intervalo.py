@@ -51,6 +51,9 @@ def test_igualdad():
     # Checamos que x e y sean iguales
     assert x == y
 
+    z = Intervalo(3)
+    assert z == 3
+
 def test_interseccion():
     
     a = Intervalo(1,3)
@@ -59,6 +62,8 @@ def test_interseccion():
     c = a & b
     
     assert c.lo == 2 and c.hi == 3
+    d = b & 3
+    assert d.lo == 3 and d.hi == 3
     
 def test_negativo():
     
