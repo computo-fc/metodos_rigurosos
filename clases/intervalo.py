@@ -58,4 +58,14 @@ class Intervalo(object):
         Calcula el radio del intervalo
         '''
         return (self.hi-self.lo)/2
+        
+    def width(self):
+        '''
+        Cacula la anchura
+        '''
+        return self.hi-self.lo
+        
+    def Abs(self):
+        
+        return max([abs(self.lo),abs(self.hi)])
 
