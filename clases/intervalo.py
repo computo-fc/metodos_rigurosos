@@ -46,4 +46,16 @@ class Intervalo(object):
 
     def __radd__(self, otro):
         return self + otro
+        
+    def middle(self):
+        '''
+        Calcula el punto medio del intervalo
+        '''
+        return (self.lo+self.hi)/2
+        
+    def radio(self):
+        '''        
+        Calcula el radio del intervalo
+        '''
+        return (self.hi-self.lo)/2
 
