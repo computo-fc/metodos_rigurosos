@@ -1,7 +1,6 @@
 # -*- coding: utf-8 -*- 
 
 class Intervalo(object):
-    # Docstring
     """
     Se define la clase 'Intervalo', y los métodos para la aritmética básica de intervalos, 
     es decir, suma, resta, multiplicación y división. Se incluyen otras funciones
@@ -46,4 +45,14 @@ class Intervalo(object):
 
     def __radd__(self, otro):
         return self + otro
+
+    def __mul__(self, otro):
+        try:
+            S=[self.lo*otro.lo , self.lo * otro.hi , self.hi * otro.lo , self.hi * otro.hi ]
+            return Intervalo( min(S), max(S) )
+        except:
+            return self * Intervalo(otro)
+
+    def __rmul__(self, otro):
+        return self * otro 
 
