@@ -47,4 +47,38 @@ def test_radio():
     c=a.radio()
     
     assert c==(a.hi-a.lo)/2
+    
+def test_width():
+    '''
+    Se checa que la operacion width funcione
+    '''
+    num=np.random.uniform(-10.0,10.0)
+    num2=np.random.uniform(-10.0,10.0)
+    
+    if num>num2:
+        numaux=num2
+        num2=num
+        num=numaux
+        
+    a=Intervalo(num,num2)
+    c=a.width()
+    
+    assert c==(a.hi-a.lo)  
+    
+def test_Abs():
+    '''
+    Se checa que la operacion Abs funcione
+    '''
+    num=np.random.uniform(-10.0,10.0)
+    num2=np.random.uniform(-10.0,10.0)
+    
+    if num>num2:
+        numaux=num2
+        num2=num
+        num=numaux
+        
+    a=Intervalo(num,num2)
+    c=a.Abs()
+    
+    assert c==max([abs(a.lo),abs(a.hi)])
         
