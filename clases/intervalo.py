@@ -45,7 +45,7 @@ class Intervalo(object):
 
     def __radd__(self, otro):
         return self + otro
-
+        
     def __mul__(self, otro):
         try:
             S=[self.lo*otro.lo , self.lo * otro.hi , self.hi * otro.lo , self.hi * otro.hi ]
@@ -85,3 +85,26 @@ class Intervalo(object):
             raise ZeroDivisionError
         else:
             return Intervalo.__mul__(self,Intervalo(1./(otro.hi),1./(otro.lo)))
+
+    def middle(self):
+        '''
+        Calcula el punto medio del intervalo
+        '''
+        return (self.lo+self.hi)/2
+        
+    def radio(self):
+        '''        
+        Calcula el radio del intervalo
+        '''
+        return (self.hi-self.lo)/2
+        
+    def width(self):
+        '''
+        Cacula la anchura
+        '''
+        return self.hi-self.lo
+        
+    def Abs(self):
+        
+        return max([abs(self.lo),abs(self.hi)])
+

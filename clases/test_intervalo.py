@@ -1,16 +1,16 @@
 # Escribimos funciones con el nombre test_ALGO
 
-from intervalo import Intervalo
+from intervalo import *
+
+import numpy as np
 
 def test_adicion():
+    a = Intervalo(1, 2)
+    b = Intervalo(2, 3)
+    c = a + b
 
-	a = Intervalo(1, 2)
-	b = Intervalo(2, 3)
-
-	c = a + b
-
-	# Quiero checar que c, definido asi, esta bien:
-	assert c.lo == 3 and c.hi == 5
+    # Quiero checar que c, definido asi, esta bien:
+    assert c.lo == 3 and c.hi == 5
 
 def test_multiplicacion():
     # Test de la multiplicacion (Laura y Leon)
@@ -51,8 +51,8 @@ def test_igualdad():
     assert x == y
 
     # Otro test
-    z = Intervalo(3)
-    assert z == 3
+    #z = Intervalo(3)
+    #assert z == 3
 
 def test_interseccion():
     
@@ -79,8 +79,85 @@ def test_division():
     assert c.lo==2 and c.hi==8
     
     # Otros tests
-    d = a/3
-    assert d.lo == 1./3 and d.hi==2./3
-    d = 3.0/a
-    assert d.lo == 3./2 and d.hi == 3.
+    #d = a/3
+    #assert d.lo == 1./3 and d.hi==2./3
+    #d = 3.0/a
+    #assert d.lo == 3./2 and d.hi == 3.
 
+def test_middle():
+    '''
+    Se checa que la operacion punto medio funcione
+    '''
+    num=np.random.uniform(-10.0,10.0)
+    num2=np.random.uniform(-10.0,10.0)
+    
+    #El if siguiente se hace asumiendo que al definir el objeto intervalo incorrectamente
+    #este no volteara los valores.
+    #if num>num2:
+    #    numaux=num2
+    #    num2=num
+    #    num=numaux
+    if num > num2:
+        num, num2 = num2, num
+    
+    a=Intervalo(num,num2)
+    c=a.middle()
+    
+    assert  c==(num+num2)/2
+    
+def test_radio():
+    '''
+    Se checa que la operacion radio funcione
+    '''
+    num=np.random.uniform(-10.0,10.0)
+    num2=np.random.uniform(-10.0,10.0)
+    
+    #if num>num2:
+    #    numaux=num2
+    #    num2=num
+    #    num=numaux
+    if num > num2:
+        num, num2 = num2, num
+    
+    a=Intervalo(num,num2)
+    c=a.radio()
+    
+    assert c==(a.hi-a.lo)/2
+    
+def test_width():
+    '''
+    Se checa que la operacion width funcione
+    '''
+    num=np.random.uniform(-10.0,10.0)
+    num2=np.random.uniform(-10.0,10.0)
+    
+    #if num>num2:
+    #    numaux=num2
+    #    num2=num
+    #    num=numaux
+    if num > num2:
+        num, num2 = num2, num
+    
+    a=Intervalo(num,num2)
+    c=a.width()
+    
+    assert c==(a.hi-a.lo)  
+    
+def test_Abs():
+    '''
+    Se checa que la operacion Abs funcione
+    '''
+    num=np.random.uniform(-10.0,10.0)
+    num2=np.random.uniform(-10.0,10.0)
+    
+    #if num>num2:
+    #    numaux=num2
+    #    num2=num
+    #    num=numaux
+    if num > num2:
+        num, num2 = num2, num
+    
+    a=Intervalo(num,num2)
+    c=a.Abs()
+    
+    assert c==max([abs(a.lo),abs(a.hi)])
