@@ -18,10 +18,9 @@ end
 
 
 type U
-    #Hay que pasarle un arreglo de intervalos
     intervals
 
-    function U(intervals)
+    function U(intervals...)
        lista_intervalos = Inter[intervals[1]]
             for i in intervals
                 g = x -> i == x
@@ -133,13 +132,18 @@ function radius(x::Interval)
 end
 
 
-function intersec(intervalos::Array{Interval,1})
-    #hay que pasarle un arreglo de intervalos
+function intersection(intervalos::Interval...)
     
-    aux = intervalos[1]
+    arreglo_intervalos = Interval[]
+    
+    for i = intervalos
+        append!(arreglo_intervalos, [i])
+    end
+
+    aux = arreglo_intervalos[1]
     
     for i = (2:length(intervalos))
-        if aux.upper > intervalos[i].lower & aux.lower < intervalos[i].upper
+        if (aux.upper > intervalos[i].lower) & (aux.lower < intervalos[i].upper)
         
             lo = max(aux.lower, intervalos[i].lower)
             hi = min(aux.upper, intervalos[i].upper)
@@ -147,10 +151,9 @@ function intersec(intervalos::Array{Interval,1})
             aux = Interval(lo, hi)
         else
             aux = None
-        end
-        
-        return aux        
+        end        
     end
+    return aux
 end
     
 
