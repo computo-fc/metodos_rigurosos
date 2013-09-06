@@ -36,6 +36,14 @@ type U
 end
 
 
+function show(io::IO, u::U)
+    print("Union of Intervals:\n")       
+    for i = u.intervals
+        print("[$(i.lower), $(i.upper)]  ")
+    end
+end
+
+
 function hull(x::Interval, y::Interval)
     Interval(min(x.lower, y.lower), max(x.upper, y.upper))
 end
@@ -157,7 +165,5 @@ function intersection(intervalos...)
 end
 
 
-a = Interval(-1,1)
-b = Interval(-10, 10)
-c = Interval(0, 5)
+
 
