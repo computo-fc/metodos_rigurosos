@@ -120,6 +120,44 @@ function show(io::IO, x::Interval)
 end
 
 
+function width(x::Interval)
+    x.upper - x.lower
+end
+
+function middle(x::Interval)
+    (x.upper + x.lower)/2.0
+end
+
+function radius(x::Interval)
+    width(x)/2.0
+end
+
+
+function intersec(intervalos::Array{Interval,1})
+    #hay que pasarle un arreglo de intervalos
+    
+    aux = intervalos[1]
+    
+    for i = (2:length(intervalos))
+        if aux.upper > intervalos[i].lower & aux.lower < intervalos[i].upper
+        
+            lo = max(aux.lower, intervalos[i].lower)
+            hi = min(aux.upper, intervalos[i].upper)
+            
+            aux = Interval(lo, hi)
+        else
+            aux = None
+        end
+        
+        return aux        
+    end
+end
+    
+
+
+
+
 a = Interval(-1, 1)
 b = Interval(4, 10)
 c = Interval(-3.8,1.0)
+d = Interval(-10, 10)
