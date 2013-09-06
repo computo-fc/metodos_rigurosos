@@ -132,7 +132,7 @@ function radius(x::Interval)
 end
 
 
-function intersection(intervalos::Interval...)
+function intersection(intervalos...)
     
     arreglo_intervalos = Interval[]
     
@@ -155,4 +155,9 @@ function intersection(intervalos::Interval...)
     end
     return aux
 end
+
+
+a = Interval(-1,1)
+b = Interval(-10, 10)
+c = Interval(0, 5)
 
