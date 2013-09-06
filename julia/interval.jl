@@ -155,12 +155,4 @@ function intersection(intervalos::Interval...)
     end
     return aux
 end
-    
 
-
-
-
-a = Interval(-1, 1)
-b = Interval(4, 10)
-c = Interval(-3.8,1.0)
-d = Interval(-10, 10)
