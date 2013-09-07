@@ -1,5 +1,3 @@
-#Definiremos la clase intervalo
-
 import Base.show
 
 abstract Inter
