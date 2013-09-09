@@ -78,7 +78,7 @@ Suma de intervalos
     #interseccion
     def __and__(self, otro):
         """
-        Interseccion de intervalos
+        Intersección de intervalos
         Funciona con la sintaxis &, (como el AND bitwise)
         """
         if not isinstance(otro,Intervalo):
