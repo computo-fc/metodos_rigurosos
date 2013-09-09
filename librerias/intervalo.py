@@ -63,7 +63,12 @@ class Intervalo(object):
         else:
             return False
 
+    #interseccion
     def __and__(self, otro):
+        """
+        Interseccion de intervalos
+        Funciona con la sintaxis &, (como el AND bitwise)
+        """
         if not isinstance(otro,Intervalo):
             otro = Intervalo(otro)
         if (self.lo > otro.hi) | (self.hi < otro.lo):
@@ -73,7 +78,11 @@ class Intervalo(object):
             b = min( self.hi, otro.hi )
             return Intervalo(a,b)
     
+    #interseccion por la izquierda
     def __rand__(self, otro):
+        """
+        Interseccion de intervalos (por la izquierda)
+        """
         return self & otro
     
     #negativo del intervalo
