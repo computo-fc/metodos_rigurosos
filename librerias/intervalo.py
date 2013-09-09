@@ -87,6 +87,9 @@ class Intervalo(object):
     
     #negativo del intervalo
     def __neg__(self):
+        """
+        Devuelve el valor negativo del intervalo
+        """
         return Intervalo(-self.hi, -self.lo)
         
     def __div__(self, otro):
