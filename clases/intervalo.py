@@ -1,17 +1,17 @@
-# -*- coding: utf-8 -*- 
+# -*- coding: utf-8 -*-
 
 class Intervalo(object):
     """
-    Se define la clase 'Intervalo', y los métodos para la aritmética básica de intervalos, 
-    es decir, suma, resta, multiplicación y división. Se incluyen otras funciones
-    que serán útiles.
-    """
+Se define la clase 'Intervalo', y los métodos para la aritmética básica de intervalos,
+es decir, suma, resta, multiplicación y división. Se incluyen otras funciones
+que serán útiles.
+"""
     def __init__(self,lo,hi=None):
-        """ 
-        Definimos las propiedades del objeto Intervalo a partir de sus bordes,
-        lo y hi, donde lo <= hi. En el caso en que el intervalo sólo tenga
-        un número, éste se interpreta como un intervalo 'delgado' o 'degenerado'.
         """
+Definimos las propiedades del objeto Intervalo a partir de sus bordes,
+lo y hi, donde lo <= hi. En el caso en que el intervalo sólo tenga
+un número, éste se interpreta como un intervalo 'delgado' o 'degenerado'.
+"""
         if hi is None:
             hi = lo
         elif (hi < lo):
@@ -36,8 +36,8 @@ class Intervalo(object):
     # Aquí vienen las operaciones aritméticas
     def __add__(self, otro):
         """
-        Suma de intervalos
-        """
+Suma de intervalos
+"""
         try:
             return Intervalo(self.lo + otro.lo, self.hi + otro.hi)
         except:
@@ -57,11 +57,23 @@ class Intervalo(object):
         return self * otro
 
     # Esta es la funcion igualdad para intervalos
+    
     def __eq__(self, otro):
-        if self.lo == otro.lo and self.hi == otro.hi:
-            return True
-        else:
-            return False
+        """
+        función igualdad para int6ervalos 
+
+        """
+        try:
+            if self.lo == otro.lo and self.hi == otro.hi:
+                return True
+            else:
+                return False
+        except:
+            if self.lo == Intervalo(otro).lo and self.hi == Intervalo(otro).hi:
+                return True
+            else:
+                return False
+  
 
     #interseccion
     def __and__(self, otro):
@@ -100,20 +112,20 @@ class Intervalo(object):
 
     def middle(self):
         '''
-        Calcula el punto medio del intervalo
-        '''
+Calcula el punto medio del intervalo
+'''
         return (self.lo+self.hi)/2
         
     def radio(self):
-        '''        
-        Calcula el radio del intervalo
         '''
+Calcula el radio del intervalo
+'''
         return (self.hi-self.lo)/2
         
     def width(self):
         '''
-        Cacula la anchura
-        '''
+Cacula la anchura
+'''
         return self.hi-self.lo
         
     def Abs(self):
