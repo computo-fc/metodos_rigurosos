@@ -1,3 +1,4 @@
+
 # -*- coding: utf-8 -*- 
 
 class Intervalo(object):
@@ -12,6 +13,8 @@ class Intervalo(object):
         lo y hi, donde lo <= hi. En el caso en que el intervalo sólo tenga
         un número, éste se interpreta como un intervalo 'delgado' o 'degenerado'.
         """
+	
+
         if hi is None:
             hi = lo
         elif (hi < lo):
@@ -38,6 +41,7 @@ class Intervalo(object):
         """
         Suma de intervalos
         """
+
         try:
             return Intervalo(self.lo + otro.lo, self.hi + otro.hi)
         except:
@@ -58,12 +62,28 @@ class Intervalo(object):
 
     # Esta es la funcion igualdad para intervalos
     def __eq__(self, otro):
-        if self.lo == otro.lo and self.hi == otro.hi:
-            return True
-        else:
-            return False
+        """
+        función igualdad para int6ervalos 
 
+        """
+        try:
+            if self.lo == otro.lo and self.hi == otro.hi:
+                return True
+            else:
+                return False
+        except:
+            if self.lo == Intervalo(otro).lo and self.hi == Intervalo(otro).hi:
+                return True
+            else:
+                return False
+  
+
+    #interseccion
     def __and__(self, otro):
+        """
+        Intersección de intervalos
+        Funciona con la sintaxis &, (como el AND bitwise)
+        """
         if not isinstance(otro,Intervalo):
             otro = Intervalo(otro)
         if (self.lo > otro.hi) | (self.hi < otro.lo):
@@ -73,24 +93,41 @@ class Intervalo(object):
             b = min( self.hi, otro.hi )
             return Intervalo(a,b)
     
+    #interseccion por la izquierda
     def __rand__(self, otro):
+        """
+        Interseccion de intervalos (por la izquierda)
+        """
         return self & otro
     
     #negativo del intervalo
     def __neg__(self):
+        """
+        Devuelve el valor negativo del intervalo
+        """
         return Intervalo(-self.hi, -self.lo)
-        
+
+    #division con denominadores que no contienen al cero    
     def __div__(self, otro):
+	"""
+	División
+	"""
         if not isinstance(otro, Intervalo):
             otro = Intervalo(otro)
-        if otro.mini <= 0 <= otro.maxi:
+
+        if otro.lo <= 0 <= otro.hi:
             raise ZeroDivisionError
+
         else:
-            return Intervalo.__mul__(self, Intervalo(1./otro.maxi, 1./otro.mini))
+            return Intervalo.__mul__(self, Intervalo(1./otro.hi, 1./otro.lo))
 
     def __rdiv__(self, otro):
+	"""
+	División revrsa para poder usar floats en el numerador
+	"""
         if not isinstance(otro, Intervalo):
             otro = Intervalo(otro)
+
         return Intervalo.__div__(otro, self)
 
     def middle(self):
@@ -114,4 +151,5 @@ class Intervalo(object):
     def Abs(self):
         
         return max([abs(self.lo),abs(self.hi)])
+	
 
