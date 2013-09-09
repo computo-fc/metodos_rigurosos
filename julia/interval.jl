@@ -16,6 +16,7 @@ end
 
 
 type U
+
     intervals
 
     function U(intervals...)
@@ -34,10 +35,11 @@ type U
 end
 
 
+
 function show(io::IO, u::U)
-    print("Union of Intervals:\n")       
+    print(io,"Union of Intervals:\n")       
     for i = u.intervals
-        print("[$(i.lower), $(i.upper)]  ")
+        println(io,"[$(i.lower), $(i.upper)]")
     end
 end
 
@@ -49,14 +51,12 @@ end
 
 function (==)(x::Interval, y::Interval)
 
-    if (x.lower == y.lower) & (x.upper == y.upper)
+    if x.lower == y.lower && x.upper == y.upper
         return true
     else
         return false
     end
 end
-
-
 
 
 (+)(x::Inter, y::Inter) = Interval(x.lower + y.lower, x.upper + y.upper)
@@ -113,7 +113,7 @@ function (/)(x::Interval, y::Interval)
     y = reciprocal(y)
     ans = x*y
 
-        if isa(ans, U) & length(ans.intervals) == 1
+        if isa(ans, U) && length(ans.intervals) == 1
             return ans.intervals[1]
         else
             return ans
@@ -121,7 +121,7 @@ function (/)(x::Interval, y::Interval)
 end
 
 function show(io::IO, x::Interval)
-    print("[$(x.lower), $(x.upper)]")
+    print(io, "[$(x.lower), $(x.upper)]")
 end
 
 
@@ -140,16 +140,12 @@ end
 
 function intersection(intervalos...)
     
-    arreglo_intervalos = Interval[]
-    
-    for i = intervalos
-        append!(arreglo_intervalos, [i])
-    end
+    arreglo_intervalos = [i for i in intervalos]
 
     aux = arreglo_intervalos[1]
     
     for i = (2:length(intervalos))
-        if (aux.upper > intervalos[i].lower) & (aux.lower < intervalos[i].upper)
+        if aux.upper > intervalos[i].lower && aux.lower < intervalos[i].upper
         
             lo = max(aux.lower, intervalos[i].lower)
             hi = min(aux.upper, intervalos[i].upper)
@@ -161,6 +157,70 @@ function intersection(intervalos...)
     end
     return aux
 end
+
+
+function overlap(x::Interval, y::Interval)
+    if intersection(x,y) != None
+        return true
+    else
+        return false
+    end
+end
+        
+
+
+    
+
+#function clean_union(u::U)
+#    #Esta función simplifica la union de intervalos, juntando intervalos que se traslapan
+##     
+#    new_array = Interval[]
+#    overlapping_array = Array[]
+#     
+##    
+#     for i = 1:length(u.intervals)
+#        overlaps = map(x -> overlap(x, u.intervals[i]), u.intervals)
+#        append!(overlapping_array, overlaps)
+#     end
+#     
+#     for i = 1:length(u.intervals)
+#        for j = 1:length(u.intervals)
+#            
+#            if overlapping_array[i, j]
+#                append(new_array)
+        
+     
+function <(x::Interval, y::Interval)
+    if x.upper < y.lower
+        return true
+    else
+        return false
+    end
+end
+
+function >(x::Interval, y::Interval)
+    if x.lower > y. upper
+        return true
+    else
+        return false
+    end
+end      
+
+
+
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
 
 
 
