@@ -104,6 +104,16 @@ Suma de intervalos
         """
         return Intervalo(-self.hi, -self.lo)
         
+    #Funcion reciproco    
+    def reciprocal(self):
+        """
+        Devuelve un intervalo con los valores recíprocos
+        """
+        if self.lo == 0 or self.hi == 0:
+            raise ZeroDivisionError
+        else:
+            return Intervalo(1.0/self.hi,1.0/self.lo)
+        
     def __div__(self, otro):
         if otro.lo <= 0 <= otro.hi:
             raise ZeroDivisionError
