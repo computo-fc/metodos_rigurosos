@@ -2,16 +2,16 @@
 
 class Intervalo(object):
     """
-Se define la clase 'Intervalo', y los métodos para la aritmética básica de intervalos,
-es decir, suma, resta, multiplicación y división. Se incluyen otras funciones
-que serán útiles.
-"""
-    def __init__(self,lo,hi=None):
+    Se define la clase 'Intervalo', y los métodos para la aritmética básica de intervalos,
+    es decir, suma, resta, multiplicación y división. Se incluyen otras funciones
+    que serán útiles.
+    """
+    def __init__(self, lo, hi=None):
         """
-Definimos las propiedades del objeto Intervalo a partir de sus bordes,
-lo y hi, donde lo <= hi. En el caso en que el intervalo sólo tenga
-un número, éste se interpreta como un intervalo 'delgado' o 'degenerado'.
-"""
+        Definimos las propiedades del objeto Intervalo a partir de sus bordes,
+        lo y hi, donde lo <= hi. En el caso en que el intervalo sólo tenga
+        un número, éste se interpreta como un intervalo 'delgado' o 'degenerado'.
+        """
         if hi is None:
             hi = lo
         elif (hi < lo):
@@ -36,8 +36,8 @@ un número, éste se interpreta como un intervalo 'delgado' o 'degenerado'.
     # Aquí vienen las operaciones aritméticas
     def __add__(self, otro):
         """
-Suma de intervalos
-"""
+        Suma de intervalos
+        """
         try:
             return Intervalo(self.lo + otro.lo, self.hi + otro.hi)
         except:
@@ -60,7 +60,7 @@ Suma de intervalos
     
     def __eq__(self, otro):
         """
-        función igualdad para int6ervalos 
+        función igualdad para intervalos 
 
         """
         try:
@@ -79,12 +79,14 @@ Suma de intervalos
     def __and__(self, otro):
         """
         Intersección de intervalos
-        Funciona con la sintaxis &, (como el AND bitwise)
+        Funciona con la sintaxis & (como el AND bitwise)
         """
         if not isinstance(otro,Intervalo):
             otro = Intervalo(otro)
+
         if (self.lo > otro.hi) | (self.hi < otro.lo):
             return None
+
         else:
             a = max( self.lo, otro.lo )
             b = min( self.hi, otro.hi )
@@ -121,24 +123,24 @@ Suma de intervalos
             return Intervalo.__mul__(self,Intervalo(1./(otro.hi),1./(otro.lo)))
 
     def middle(self):
-        '''
-Calcula el punto medio del intervalo
-'''
+        """
+        Calcula el punto medio del intervalo
+        """
         return (self.lo+self.hi)/2
         
     def radio(self):
-        '''
-Calcula el radio del intervalo
-'''
+        """
+        Calcula el radio del intervalo
+        """
         return (self.hi-self.lo)/2
         
     def width(self):
-        '''
-Cacula la anchura
-'''
+        """
+        Cacula la anchura
+        """
         return self.hi-self.lo
         
-    def Abs(self):
+    def abs(self):
         
         return max([abs(self.lo),abs(self.hi)])
 
