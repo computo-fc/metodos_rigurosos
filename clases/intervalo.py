@@ -1,4 +1,5 @@
-# -*- coding: utf-8 -*-
+
+# -*- coding: utf-8 -*- 
 
 class Intervalo(object):
     """
@@ -57,7 +58,6 @@ class Intervalo(object):
         return self * otro
 
     # Esta es la funcion igualdad para intervalos
-    
     def __eq__(self, otro):
         """
         función igualdad para intervalos 
@@ -105,12 +105,30 @@ class Intervalo(object):
         Devuelve el valor negativo del intervalo
         """
         return Intervalo(-self.hi, -self.lo)
-        
+
+    #division con denominadores que no contienen al cero    
     def __div__(self, otro):
+	"""
+	División
+	"""
+        if not isinstance(otro, Intervalo):
+            otro = Intervalo(otro)
+
         if otro.lo <= 0 <= otro.hi:
             raise ZeroDivisionError
+
         else:
-            return Intervalo.__mul__(self,Intervalo(1./(otro.hi),1./(otro.lo)))
+            return Intervalo.__mul__(self, Intervalo(1./otro.hi, 1./otro.lo))
+    
+    #división reversa
+    def __rdiv__(self, otro):
+	"""
+	División revrsa para poder usar floats en el numerador
+	"""
+        if not isinstance(otro, Intervalo):
+            otro = Intervalo(otro)
+
+        return Intervalo.__div__(otro, self)
 
     def middle(self):
         """
@@ -128,9 +146,11 @@ class Intervalo(object):
         """
         Cacula la anchura
         """
+
         return self.hi-self.lo
         
     def abs(self):
         
         return max([abs(self.lo),abs(self.hi)])
+	
 
