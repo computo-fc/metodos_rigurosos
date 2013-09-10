@@ -120,7 +120,7 @@ class Intervalo(object):
 
         else:
             return Intervalo.__mul__(self, Intervalo(1./otro.hi, 1./otro.lo))
-
+    #división reversa
     def __rdiv__(self, otro):
 	"""
 	División revrsa para poder usar floats en el numerador
