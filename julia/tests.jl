@@ -1,4 +1,4 @@
-inlcude("interval.jl")
+include("interval.jl")
 
 function test_interval()
     
