@@ -4,7 +4,7 @@ from intervalo import *
 
 import numpy as np
 
-def test_adicion():
+def test_adicioAn():
     a = Intervalo(1, 2)
     b = Intervalo(2, 3)
     c = a + b
@@ -85,9 +85,9 @@ def test_division():
     assert d.lo == 3./2 and d.hi == 3.
 
 def test_middle():
-    '''
+    """
     Se checa que la operacion punto medio funcione
-    '''
+    """
     num=np.random.uniform(-10.0,10.0)
     num2=np.random.uniform(-10.0,10.0)
     
@@ -106,9 +106,9 @@ def test_middle():
     assert  c==(num+num2)/2
     
 def test_radio():
-    '''
+    """
     Se checa que la operacion radio funcione
-    '''
+    """
     num=np.random.uniform(-10.0,10.0)
     num2=np.random.uniform(-10.0,10.0)
     
@@ -125,9 +125,9 @@ def test_radio():
     assert c==(a.hi-a.lo)/2
     
 def test_width():
-    '''
+    """
     Se checa que la operacion width funcione
-    '''
+    """
     num=np.random.uniform(-10.0,10.0)
     num2=np.random.uniform(-10.0,10.0)
     
@@ -144,9 +144,9 @@ def test_width():
     assert c==(a.hi-a.lo)  
     
 def test_Abs():
-    '''
+    """
     Se checa que la operacion Abs funcione
-    '''
+    """
     num=np.random.uniform(-10.0,10.0)
     num2=np.random.uniform(-10.0,10.0)
     
@@ -158,6 +158,6 @@ def test_Abs():
         num, num2 = num2, num
     
     a=Intervalo(num,num2)
-    c=a.Abs()
+    c=a.abs()
     
     assert c==max([abs(a.lo),abs(a.hi)])
