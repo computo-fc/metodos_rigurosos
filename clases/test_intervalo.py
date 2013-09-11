@@ -12,6 +12,30 @@ def test_adicioAn():
     # Quiero checar que c, definido asi, esta bien:
     assert c.lo == 3 and c.hi == 5
 
+def test_resta():
+    #Test para las restas siguiendo la idea de Neftalí.
+    
+    num=np.random.uniform(-10.0,10.0)
+    num2=np.random.uniform(-10.0,10.0)
+    num3=np.random.uniform(-10.0,10.0)
+    num4=np.random.uniform(-10.0,10.0)
+    
+    if num > num2:
+        num, num2 = num2, num
+    if num3 > num4:
+        num3, num4 = num4, num3
+    
+    a=Intervalo(num,num2)
+    b=Intervalo(num3,num4)
+    
+    c = a - b
+    d = 3.0 - a
+    e = a - 3.0
+
+    assert c.lo== (num - num4) and c.hi== (num2 - num3)
+    assert d.lo== (3.0 - num2) and d.hi== (3.0 - num)
+    assert e.lo== (num - 3.0) and e.hi== (num2 - 3.0)
+    
 def test_multiplicacion():
     # Test de la multiplicacion (Laura y Leon)
     a = Intervalo(1, 2)
