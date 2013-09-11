@@ -158,6 +158,24 @@ class Intervalo(object):
         """
         return Intervalo(-self.hi, -self.lo)
 
+    #dada la definicion del intervalo negativo podemos hacer la resta
+    def __sub__(self, otro):
+        """
+        Resta de Intervalos
+        """
+        if not isinstance(otro, Intervalo):
+            otro = Intervalo(otro)
+        
+        return self + (-otro)                
+        
+    #resta reversa para poder hacer (float) - Intervalo
+    def __rsub__(self, otro):
+        
+        if not isinstance(otro, Intervalo):
+            otro = Intervalo(otro)
+            
+        return Intervalo.__sub__(otro, self)
+        
     #division con denominadores que no contienen al cero    
     def __div__(self, otro):
 	"""
