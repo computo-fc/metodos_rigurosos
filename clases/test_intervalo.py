@@ -79,7 +79,11 @@ def test_reciproco():
     c = Intervalo(0)
    
     assert a.reciprocal().lo == 1.0/12 and a.reciprocal().hi == 1.0/10
-    assert b.reciprocal().lo == 1.0/-1 and b.reciprocal().hi == 1.0/5
+    
+    try:
+        b.reciprocal()
+    except ZeroDivisionError:
+        assert True
     
     try:
         c.reciprocal()
