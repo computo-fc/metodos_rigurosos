@@ -14,7 +14,7 @@ def test_adicion():
     assert c.lo == 3 and c.hi == 5
 
 def test_comparacion_lt():
-    '''Test < de intervalos'''
+    '''Test < de intervalos.'''
 
     a=Intervalo(-1,1)
     b=Intervalo(0,1)
@@ -28,7 +28,7 @@ def test_comparacion_lt():
     assert (c<d) == False and (d<c) == False
 
 def test_comparacion_gt():
-    '''Test > de intervalos'''
+    '''Test > de intervalos.'''
 
     a=Intervalo(-1,1)
     b=Intervalo(0,1)
@@ -42,7 +42,7 @@ def test_comparacion_gt():
     assert (c>d) == False and (d>c) == False
     
 def test_comparacion_le():
-    '''Test <= de intervalos'''
+    '''Test <= de intervalos.'''
     a=Intervalo(-1,1)
     b=Intervalo(0,1)
     c=Intervalo(1,2)
@@ -55,7 +55,7 @@ def test_comparacion_le():
     assert (c<=d) == True and (d<=c) == False
 
 def test_comparacion_ge():
-    '''Test >= de intervalos'''
+    '''Test >= de intervalos.'''
     a=Intervalo(-1,1)
     b=Intervalo(0,1)
     c=Intervalo(1,2)
