@@ -239,8 +239,7 @@ class Intervalo(object):
 	'''Relación <= de intervalos'''
 	
         try: 
-            return (self.lo <= otro.lo) and self.hi <= otro.hi
-	
+            return (self.lo <= otro.lo) and self.hi <= otro.hi	
         except: 
             return self <= Intervalo(otro)
 
@@ -250,6 +249,5 @@ class Intervalo(object):
 	
         try:
             return (self.lo >= otro.lo) and self.hi >= otro.hi
-        
         except: 
             return self >= Intervalo(otro)
