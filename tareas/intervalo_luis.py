@@ -46,34 +46,35 @@ class Intervalo(object):
         return self + otro
     
     def __lt__(self,otro):
-        '''Relación < de intervalos. Python por default regresa True o False
-        al ejecutar A<B, pero no se especifica que cuando A.lo<0<A.hi o B.lo<0<B.hi
-        la operación no está definida.'''
+        '''Relación < de intervalos.'''
         
-        try: 
-            if self.lo < 0 < self.hi or otro.lo < 0 < otro.hi:
-                raise ValueError
-            elif self.hi < otro.lo:
-                return True
-            else:
-                return False
-        except ValueError:
-            print "No se pueden comparar intervalos que contengan el  cero."
-            raise
-
+        try:
+            return self.hi < otro.lo
+        except:
+            return self < Intervalo(otro)
+        
     def __gt__(self,otro):
-        '''Relación > de intervalos. Python por default regresa True o False
-        al ejecutar A>B, pero no se especifica que cuando A.lo<0<A.hi o B.lo<0<B.hi
-        la operación no está definida.'''
+        '''Relación > de intervalos.'''
         
+        try:
+            return self.lo > otro.hi
+        except:
+            return self > Intervalo(otro)
+    
+    def __le__(self,otro):
+	'''Relación <= de intervalos'''
+	
         try: 
-            if self.lo < 0 < self.hi or otro.lo < 0 < otro.hi:
-                raise ValueError
-            elif self.lo > otro.hi:
-                return True
-            else:
-                return False
-        except ValueError:
-            print "No se pueden comparar intervalos que contengan el  cero."
-            raise
+            return (self.lo <= otro.lo) and self.hi <= otro.hi
+	
+        except: 
+            return self <= Intervalo(otro)
 
+    def __ge__(self,otro):
+	'''Relación >= de intervalos'''
+	
+        try:
+            return (self.lo >= otro.lo) and self.hi >= otro.hi
+        
+        except: 
+            return self >= Intervalo(otro)
