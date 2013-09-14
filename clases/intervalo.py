@@ -215,5 +215,41 @@ class Intervalo(object):
     def abs(self):
         
         return max([abs(self.lo),abs(self.hi)])
-	
+    
+    #Relación < de intervalos.
+    def __lt__(self,otro):
+        '''Relación < de intervalos.'''
+        
+        try:
+            return self.hi < otro.lo
+        except:
+            return self < Intervalo(otro)
 
+    #Relación > de intervalos.
+    def __gt__(self,otro):
+        '''Relación > de intervalos.'''
+        
+        try:
+            return self.lo > otro.hi
+        except:
+            return self > Intervalo(otro)
+
+    #Relación <= de intervalos.
+    def __le__(self,otro):
+	'''Relación <= de intervalos'''
+	
+        try: 
+            return (self.lo <= otro.lo) and self.hi <= otro.hi
+	
+        except: 
+            return self <= Intervalo(otro)
+
+    #Relación >= de intervalos.
+    def __ge__(self,otro):
+	'''Relación >= de intervalos'''
+	
+        try:
+            return (self.lo >= otro.lo) and self.hi >= otro.hi
+        
+        except: 
+            return self >= Intervalo(otro)
