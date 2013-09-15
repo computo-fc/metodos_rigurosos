@@ -71,6 +71,24 @@ def test_negativo():
     c = -a
     
     assert c.lo == -5 and c.hi == -2
+    
+def test_reciproco():
+    
+    a = Intervalo(10, 12)
+    b = Intervalo(-1, 5)
+    c = Intervalo(0)
+   
+    assert a.reciprocal().lo == 1.0/12 and a.reciprocal().hi == 1.0/10
+    
+    try:
+        b.reciprocal()
+    except ZeroDivisionError:
+        assert True
+    
+    try:
+        c.reciprocal()
+    except ZeroDivisionError:
+        assert True
 
 def test_division():
     a = Intervalo(1,2)

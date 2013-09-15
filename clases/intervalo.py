@@ -158,6 +158,17 @@ class Intervalo(object):
         """
         return Intervalo(-self.hi, -self.lo)
 
+    #Funcion reciproco
+    def reciprocal(self):
+        """
+        Devuelve un intervalo con los valores recíprocos
+        """
+        if self.lo <= 0 <= self.hi:
+            #si el intervalo contiene el cero debe de aparecer un error
+            raise ZeroDivisionError
+        else:
+            return Intervalo(1.0/self.hi,1.0/self.lo)
+
     #division con denominadores que no contienen al cero    
     def __div__(self, otro):
 	"""
@@ -170,7 +181,7 @@ class Intervalo(object):
             raise ZeroDivisionError
 
         else:
-            return Intervalo.__mul__(self, Intervalo(1./otro.hi, 1./otro.lo))
+            return self * otro.reciprocal()
     
     #división reversa
     def __rdiv__(self, otro):
