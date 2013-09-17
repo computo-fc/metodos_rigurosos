@@ -179,3 +179,16 @@ def test_Abs():
     c=a.abs()
     
     assert c==max([abs(a.lo),abs(a.hi)])
+    
+def test_hull():
+    num=np.random.uniform(-10.0,10.0,[10])
+    num2=np.random.uniform(-10.0,10.0,[10])
+    a = Intervalo(num[0],num2[0])
+    for i in range(len(num)):
+      a = Intervalo.hull(a,Intervalo(num[i],num2[i]))
+      #print Intervalo(num[i],num2[i]),Intervalo(num[i+1],num2[i+1]),a
+      
+    #print a
+    #print min(min(num),min(num2))
+    #print max(max(num),max(num2))
+    assert (a.lo==min(min(num),min(num2))) & (a.hi==max(max(num),max(num2)))

@@ -215,5 +215,7 @@ class Intervalo(object):
     def abs(self):
         
         return max([abs(self.lo),abs(self.hi)])
-	
+    
+    def hull(self, otro):
+        return Intervalo(min(self.lo,otro.lo),max(self.hi,otro.hi))
 
