@@ -24,3 +24,7 @@ class Intervalo(object):
 
     def __add__(self, otro):
         return Intervalo(self.min+otro.min, self.max+otro.max)
+        
+    #Ahora vamos a definir el métdo resta para nuestra clase intervalo
+        def __sub__(self,otro):
+            return Intervalo(self.min-otro.max,self.max-otro.min)

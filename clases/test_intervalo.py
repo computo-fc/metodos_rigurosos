@@ -12,3 +12,10 @@ def test_adicion():
 	# Quiero checar que c, definido asi, esta bien:
 
 	assert c.lo == 3 and c.hi == 5
+ 
+ #Aqui se define el test para la resta
+ def test_sub():
+    a=Intervalo(-11,4)
+    b=Intervalo(2,10)
+    c=a-b
+    assert c.min==-21 and c.max==2
