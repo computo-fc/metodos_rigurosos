@@ -184,11 +184,32 @@ def test_hull():
     num=np.random.uniform(-10.0,10.0,[10])
     num2=np.random.uniform(-10.0,10.0,[10])
     a = Intervalo(num[0],num2[0])
+    b=[]
     for i in range(len(num)):
       a = Intervalo.hull(a,Intervalo(num[i],num2[i]))
+      b.append(Intervalo(num[i],num2[i]))
       #print Intervalo(num[i],num2[i]),Intervalo(num[i+1],num2[i+1]),a
-      
+    plot_intevalo(b)
     #print a
     #print min(min(num),min(num2))
     #print max(max(num),max(num2))
     assert (a.lo==min(min(num),min(num2))) & (a.hi==max(max(num),max(num2)))
+
+def plot_intevalo(a,y=0):
+    from matplotlib import pyplot as plt
+    mins=[]
+    maxs=[]
+    for i in a:
+      y=y+0.05
+      col=np.random.uniform(0.0,1.0,[3])
+      plt.figure(1)
+      plt.hlines(y,i.lo,i.hi,colors=tuple(col),linewidths=1.5)
+      plt.vlines(i.lo,y-0.03,y+0.03,colors=tuple(col),linewidths=1.5)
+      plt.vlines(i.hi,y-0.03,y+0.03,colors=tuple(col),linewidths=1.5)
+      mins.append(i.lo)
+      maxs.append(i.hi)
+      
+    plt.xlim(min(mins)-1.0,max(maxs)+1.0)
+    #plt.ylim(y-0.5,y+0.5)
+    return plt.show()
+    
