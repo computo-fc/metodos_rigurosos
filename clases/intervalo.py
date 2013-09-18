@@ -158,7 +158,7 @@ class Intervalo(object):
         """
         return Intervalo(-self.hi, -self.lo)
 
-    #dada la definicion del intervalo negativo podemos hacer la resta
+    #Resta
     def __sub__(self, otro):
         """
         Resta de Intervalos
@@ -166,16 +166,27 @@ class Intervalo(object):
         if not isinstance(otro, Intervalo):
             otro = Intervalo(otro)
         
-        return self + (-otro)                
+        return Intervalo(self.lo - otro.hi, self.hi - otro.lo)                
         
-    #resta reversa para poder hacer (float) - Intervalo
+    #Resta reversa para poder hacer (float) - Intervalo
     def __rsub__(self, otro):
         
         if not isinstance(otro, Intervalo):
             otro = Intervalo(otro)
             
         return Intervalo.__sub__(otro, self)
-        
+            
+    #Funcion reciproco
+    def reciprocal(self):
+        """
+        Devuelve un intervalo con los valores recíprocos
+        """
+        if self.lo <= 0 <= self.hi:
+            #si el intervalo contiene el cero debe de aparecer un error
+            raise ZeroDivisionError
+        else:
+            return Intervalo(1.0/self.hi,1.0/self.lo)
+
     #division con denominadores que no contienen al cero    
     def __div__(self, otro):
 	"""
@@ -188,7 +199,7 @@ class Intervalo(object):
             raise ZeroDivisionError
 
         else:
-            return Intervalo.__mul__(self, Intervalo(1./otro.hi, 1./otro.lo))
+            return self * otro.reciprocal()
     
     #división reversa
     def __rdiv__(self, otro):
@@ -222,5 +233,4 @@ class Intervalo(object):
     def abs(self):
         
         return max([abs(self.lo),abs(self.hi)])
-	
 
