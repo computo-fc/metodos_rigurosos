@@ -47,7 +47,10 @@ class Intervalo(object):
     def __radd__(self, otro):
         return self + otro
         
-        
+
+    def __sub__(self,otro):
+        return Intervalo(self.lo - otro.hi, self.hi - otro.lo)
+
         
     def __mul__(self, otro):
       
@@ -215,5 +218,3 @@ class Intervalo(object):
     def abs(self):
         
         return max([abs(self.lo),abs(self.hi)])
-	
-

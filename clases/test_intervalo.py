@@ -187,3 +187,9 @@ def test_Abs():
     c=a.abs()
     
     assert c==max([abs(a.lo),abs(a.hi)])
+
+def test_sub():
+    a=Intervalo(-11,4)
+    b=Intervalo(2,10)
+    c=a-b
+    assert c.lo==-21 and c.hi==2
