@@ -269,3 +269,7 @@ class Intervalo(object):
             return (self.lo >= otro.lo) and self.hi >= otro.hi
         except: 
             return self >= Intervalo(otro)
+    
+    def hull(self, otro):
+        return Intervalo(min(self.lo,otro.lo),max(self.hi,otro.hi))
+
