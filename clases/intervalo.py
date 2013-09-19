@@ -1,4 +1,3 @@
-
 # -*- coding: utf-8 -*- 
 
 class Intervalo(object):
@@ -47,9 +46,6 @@ class Intervalo(object):
     def __radd__(self, otro):
         return self + otro
         
-
-    def __sub__(self,otro):
-        return Intervalo(self.lo - otro.hi, self.hi - otro.lo)
 
         
     def __mul__(self, otro):
@@ -161,6 +157,24 @@ class Intervalo(object):
         """
         return Intervalo(-self.hi, -self.lo)
 
+    #Resta
+    def __sub__(self, otro):
+        """
+        Resta de Intervalos
+        """
+        if not isinstance(otro, Intervalo):
+            otro = Intervalo(otro)
+        
+        return Intervalo(self.lo - otro.hi, self.hi - otro.lo)                
+        
+    #Resta reversa para poder hacer (float) - Intervalo
+    def __rsub__(self, otro):
+        
+        if not isinstance(otro, Intervalo):
+            otro = Intervalo(otro)
+            
+        return Intervalo.__sub__(otro, self)
+            
     #Funcion reciproco
     def reciprocal(self):
         """
