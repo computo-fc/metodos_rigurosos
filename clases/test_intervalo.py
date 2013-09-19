@@ -7,9 +7,9 @@ from intervalo import *
 import numpy as np
 
 def TwoReals():
-    '''
+    """
     Funcion auxiliar para el test de intervalos con intervalos aleatorios
-    '''
+    """
     num=np.random.uniform(-10.0,10.0)
     num2=np.random.uniform(-10.0,10.0)
     
@@ -59,9 +59,9 @@ def test_resta():
     assert e.lo== (num - 3.0) and e.hi== (num2 - 3.0)
     
 def test_multiplicacion():
-    '''
+    """
     Se verfica la multiplicacion entre intervalos
-    '''
+    """
     # Test de la multiplicacion (Laura y Leon)
     num,num2=TwoReals()
     numb,numb2=TwoReals()
@@ -100,9 +100,9 @@ def test_multiplicacion():
 
 # Con esto checamos que la funcion igualdad funcione
 def test_igualdad():
-    '''
+    """
     Se verifica la igualdad entre intervalos
-    '''
+    """
     num,num2=TwoReals()
     x = Intervalo(num,num2)
     y = Intervalo(num,num2)
@@ -115,9 +115,9 @@ def test_igualdad():
     assert z == num
 
 def test_interseccion():
-    '''
+    """
     Test de interseccion de intervalos
-    '''
+    """
     num,num2=TwoReals()
     numb,numb2=TwoReals()
     #Se eligen los intervalos de la siguiente manera para evitar
@@ -214,8 +214,65 @@ def test_Abs():
     
     assert c==max([abs(a.lo),abs(a.hi)])
 
+
 def test_sub():
     a=Intervalo(-11,4)
     b=Intervalo(2,10)
     c=a-b
     assert c.lo==-21 and c.hi==2
+
+
+def test_comparacion_lt():
+    """Test < de intervalos."""
+
+    a=Intervalo(-1,1)
+    b=Intervalo(0,1)
+    c=Intervalo(1,2)
+    d=Intervalo(2,3)
+
+    assert (a<a) == False
+    assert (a<b) == False and (b<a) == False
+    assert (b<c) == False and (c<b) == False
+    assert (b<d) == True  and (d<b) == False
+    assert (c<d) == False and (d<c) == False
+
+def test_comparacion_gt():
+    """Test > de intervalos."""
+
+    a=Intervalo(-1,1)
+    b=Intervalo(0,1)
+    c=Intervalo(1,2)
+    d=Intervalo(2,3)
+    
+    assert (a>a) == False
+    assert (a>b) == False and (b>a) == False
+    assert (b>c) == False and (c>b) == False
+    assert (b>d) == False and (d>b) == True
+    assert (c>d) == False and (d>c) == False
+    
+def test_comparacion_le():
+    """Test <= de intervalos."""
+    a=Intervalo(-1,1)
+    b=Intervalo(0,1)
+    c=Intervalo(1,2)
+    d=Intervalo(2,3)
+
+    assert (a<=a) == True
+    assert (a<=b) == True and (b<=a) == False
+    assert (b<=c) == True and (c<=b) == False
+    assert (b<=d) == True and (d<=b) == False
+    assert (c<=d) == True and (d<=c) == False
+
+def test_comparacion_ge():
+    """Test >= de intervalos."""
+    a=Intervalo(-1,1)
+    b=Intervalo(0,1)
+    c=Intervalo(1,2)
+    d=Intervalo(2,3)
+
+    assert (a>=a) == True
+    assert (a>=b) == False and (b>=a) == True
+    assert (b>=c) == False and (c>=b) == True
+    assert (b>=d) == False and (d>=b) == True
+    assert (c>=d) == False and (d>=c) == True
+
