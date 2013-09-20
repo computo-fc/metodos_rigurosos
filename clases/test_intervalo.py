@@ -201,7 +201,7 @@ def test_width():
     a=Intervalo(num,num2)
     c=a.width()
     
-    assert c==(a.hi-a.lo)  
+    assert c==abs(a.hi-a.lo)  
     
 def test_Abs():
     """

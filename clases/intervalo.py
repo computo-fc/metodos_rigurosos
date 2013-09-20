@@ -227,7 +227,7 @@ class Intervalo(object):
         Cacula la anchura
         """
 
-        return self.hi-self.lo
+        return abs(self.hi-self.lo)
         
     def abs(self):
         
@@ -272,4 +272,49 @@ class Intervalo(object):
     
     def hull(self, otro):
         return Intervalo(min(self.lo,otro.lo),max(self.hi,otro.hi))
+        
+        
+    def cos(self):
+        
+        import numpy as np
+        
+        #Se mapea el intervalo
+        
+        if self.width()>=2*np.pi:
+            return Intervalo(-1,1)
+            
+        else:
+            
+            num,num2=np.mod(self.lo,2*np.pi), np.mod(self.hi,2*np.pi)
+        
+            if (num2<num)and(num>np.pi):
+                return Intervalo(min(np.cos(num),np.cos(num2)),1.0)
+            
+            else:
+                
+                if (num2<num)and(num<=np.pi):
+                    return Intervalo(-1.0,1.0)
+        
+                if num2>np.pi and num<np.pi:
+                    return Intervalo(-1,max(np.cos(num),np.cos(num2)))
+            
+                else:
+        
+                    num=np.cos(num)
+                    num2=np.cos(num2)
+        
+                    if num2<num:
+                        num,num2=num2,num
+            
+                        return Intervalo(num,num2)
+    
+    
+    
+                        
+        
+    
+        
+
+        
+        
 
