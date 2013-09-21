@@ -240,12 +240,11 @@ class Intervalo(object):
 	if self.lo >= 0 :
 	  return Intervalo(mp.log(self.lo), mp.log(self.hi))
 	
+
 	elif self.hi < 0:
-	  
-	  #  '[',self.lo,self.hi, '] es negativo.'
-	  raise ValueError("La función logaritmo no puede tomar intervalos totalmente negativos. \
-		[%f,%f] es negativo." %(self.lo, self.hi))
+	  raise ValueError("La función logaritmo no puede tomar intervalos totalmente negativos. El intervalo [%f,%f] es negativo." % (self.lo, self.hi) )
 	
+
 	elif self.lo < 0 and self.hi >= 0:
 	  Dom_restr = Dom_log & Intervalo(self.lo,self.hi)
 	  print "WARNING: El intervalo contiene numeros negativos. Se toma el intervalo restringido [%f,%f]."\
