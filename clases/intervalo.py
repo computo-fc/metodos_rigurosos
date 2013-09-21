@@ -220,14 +220,18 @@ class Intervalo(object):
     #funciones elementales para intervalos
       
     def exp(self):
-	"""Calcula la exponencial de un intervalo."""
+	"""
+	Calcula la exponencial de un intervalo.
+	"""
 	
         return Intervalo(mp.exp(self.lo), mp.exp(self.hi))
 
 
 
     def log(self):
-	"""Calcula el logaritmo de un intervalo."""
+	"""
+	Calcula el logaritmo de un intervalo.
+	"""
 	
 	Dom_log = Intervalo(0,mp.inf)
 		
