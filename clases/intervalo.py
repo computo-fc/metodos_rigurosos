@@ -86,22 +86,11 @@ class Intervalo(object):
                 if otro.lo >= 0:
                     return Intervalo(self.lo * otro.hi , self.hi * otro.hi)
                 elif otro.hi <= 0:
-                    return Intervalo(self.hi * otro.lo , self.lo * otro.lo)
-           
-            #si no se cumplen las anteriores entonces
-            #otro.lo <= 0 <= otro.hi
-                elif otro.lo <= self.lo and otro.hi >= 0:   #en este punto se debe tener otro.lo<=0
-                    if self.hi <= otro.hi :                 #implica que otro.hi>0
-                        return Intervalo(self.hi * otro.lo , max(self.hi * otro.hi , self.lo*otro.lo))
-                    elif  otro.hi <= self.hi:               #tal vez poner 0 <= otro.hi and
-                        return Intervalo(self.hi * otro.lo , self.lo * otro.lo)
-                
-                elif self.lo <= otro.lo :
-                    if otro.hi >=0 :
-                        return Intervalo(self.lo * otro.hi , max(self.lo * otro.lo , self.hi * otro.hi))
-                    elif otro.hi <= 0:
-                        return Intervalo(self.hi * otro.lo , self.lo * otro.lo)
+                    return Intervalo(self.hi * otro.lo , self.lo * otro.lo)         
+                elif otro.lo <= 0 and otro.hi >= 0:   
+                    return Intervalo(min(self.hi * otro.lo , self.lo * otro.hi) , max(self.hi * otro.hi , self.lo * otro.lo))
                     
+                
         except:
             return self * Intervalo(otro)
 
