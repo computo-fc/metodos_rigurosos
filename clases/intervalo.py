@@ -1,6 +1,6 @@
-
+﻿
 # -*- coding: utf-8 -*- 
-
+from sympy import mpmath as mp
 class Intervalo(object):
     """
     Se define la clase 'Intervalo', y los métodos para la aritmética básica de intervalos,
@@ -217,3 +217,37 @@ class Intervalo(object):
         return max([abs(self.lo),abs(self.hi)])
 	
 
+    #funciones elementales para intervalos
+      
+    def exp(self):
+	"""
+        Calcula la exponencial de un intervalo
+        """
+	
+        return Intervalo(mp.exp(self.lo), mp.exp(self.hi))
+
+
+
+
+    def log(self):
+	"""
+	Calcula el logaritmo de un intervalo
+	"""
+	
+	
+	Dom_log = Intervalo(0,mp.inf)
+		
+	if self.lo >= 0 :
+	  return Intervalo(mp.log(self.lo), mp.log(self.hi))
+	
+	elif self.hi < 0:
+	  
+	  #  '[',self.lo,self.hi, '] es negativo.'
+	  raise ValueError("La función logaritmo no puede tomar intervalos totalmente negativos. \
+		[%f,%f] es negativo." %(self.lo, self.hi))
+	
+	elif self.lo < 0 and self.hi >= 0:
+	  Dom_restr = Dom_log & Intervalo(self.lo,self.hi)
+	  print "WARNING: El intervalo contiene numeros negativos. Se toma el intervalo restringido [%f,%f]."\
+		% (Dom_restr.lo, Dom_restr.hi)
+	  return Intervalo(mp.log(Dom_restr.lo), mp.log(Dom_restr.hi))
