@@ -283,6 +283,11 @@ class Intervalo(object):
     
     def sqrt(self):
         import numpy as np
+        
+        if self.lo < 0:
+            print 'Advertencia: El intervalo incluye números negativos. Se modificará para comenzar en cero.'
+            self.lo = 0
+
         return Intervalo(np.sqrt(self.lo),np.sqrt(self.hi))
         
     def arctan(self):
