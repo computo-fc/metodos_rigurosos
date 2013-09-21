@@ -229,7 +229,6 @@ class Intervalo(object):
     def log(self):
 	"""Calcula el logaritmo de un intervalo."""
 	
-	
 	Dom_log = Intervalo(0,mp.inf)
 		
 	if self.lo >= 0 :
