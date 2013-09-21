@@ -272,4 +272,19 @@ class Intervalo(object):
     
     def hull(self, otro):
         return Intervalo(min(self.lo,otro.lo),max(self.hi,otro.hi))
-
+    
+    def log(self):
+        import numpy as np
+        return Intervalo(np.log(self.lo),np.log(self.hi))
+        
+    def exp(self):
+        import numpy as np
+        return Intervalo(np.exp(self.lo),np.exp(self.hi))
+    
+    def sqrt(self):
+        import numpy as np
+        return Intervalo(np.sqrt(self.lo),np.sqrt(self.hi))
+        
+    def arctan(self):
+        import numpy as np
+        return Intervalo(np.arctan(self.lo),np.arctan(self.hi))
