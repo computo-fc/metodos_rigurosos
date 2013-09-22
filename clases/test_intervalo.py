@@ -7,9 +7,15 @@ from intervalo import *
 import numpy as np
 
 def TwoReals():
+<<<<<<< HEAD
     """
     Funcion auxiliar para el test de intervalos con intervalos aleatorios
     """
+=======
+    '''
+    Funcion auxiliar para el test de intervalos con intervalos aleatorios
+    '''
+>>>>>>> f638a8e68e582657ac5e41c10d04e9c51a263ca6
     num=np.random.uniform(-10.0,10.0)
     num2=np.random.uniform(-10.0,10.0)
     
@@ -59,9 +65,15 @@ def test_resta():
     assert e.lo== (num - 3.0) and e.hi== (num2 - 3.0)
     
 def test_multiplicacion():
+<<<<<<< HEAD
     """
     Se verfica la multiplicacion entre intervalos
     """
+=======
+    '''
+    Se verfica la multiplicacion entre intervalos
+    '''
+>>>>>>> f638a8e68e582657ac5e41c10d04e9c51a263ca6
     # Test de la multiplicacion (Laura y Leon)
     num,num2=TwoReals()
     numb,numb2=TwoReals()
@@ -100,9 +112,15 @@ def test_multiplicacion():
 
 # Con esto checamos que la funcion igualdad funcione
 def test_igualdad():
+<<<<<<< HEAD
     """
     Se verifica la igualdad entre intervalos
     """
+=======
+    '''
+    Se verifica la igualdad entre intervalos
+    '''
+>>>>>>> f638a8e68e582657ac5e41c10d04e9c51a263ca6
     num,num2=TwoReals()
     x = Intervalo(num,num2)
     y = Intervalo(num,num2)
@@ -115,9 +133,15 @@ def test_igualdad():
     assert z == num
 
 def test_interseccion():
+<<<<<<< HEAD
     """
     Test de interseccion de intervalos
     """
+=======
+    '''
+    Test de interseccion de intervalos
+    '''
+>>>>>>> f638a8e68e582657ac5e41c10d04e9c51a263ca6
     num,num2=TwoReals()
     numb,numb2=TwoReals()
     #Se eligen los intervalos de la siguiente manera para evitar
