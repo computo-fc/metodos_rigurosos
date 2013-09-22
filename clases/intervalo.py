@@ -90,7 +90,6 @@ class Intervalo(object):
                 elif otro.lo <= 0 and otro.hi >= 0:   
                     return Intervalo(min(self.hi * otro.lo , self.lo * otro.hi) , max(self.hi * otro.hi , self.lo * otro.lo))
                     
-                
         except:
             return self * Intervalo(otro)
 
