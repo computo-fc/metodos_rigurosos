@@ -1,5 +1,7 @@
 # -*- coding: utf-8 -*- 
 
+import numpy as np
+
 class Intervalo(object):
     """
     Se define la clase 'Intervalo', y los métodos para la aritmética básica de intervalos,
@@ -272,27 +274,52 @@ class Intervalo(object):
     
     def hull(self, otro):
         return Intervalo(min(self.lo,otro.lo),max(self.hi,otro.hi))
+
+#Aquí se definirán funciones sobre intervalos.
+   
+def recortar_intervalo(self):
+    """
+    Función que recorta un intervalo a valores no negativos, o levanta 
+    un error si el intervalo es completamente negativo
+    """
+    lo = self.lo
+
+    if self.hi < 0:
+        print 'Error: el intervalo es puramente negativo'
+        return None
+    elif self.lo < 0:
+        print 'Advertencia: El intervalo incluye números negativos. Se modificará para comenzar en cero.'
+        lo = 0
     
-    def log(self):
-        import numpy as np
-        return Intervalo(np.log(self.lo),np.log(self.hi))
-        
-    def exp(self):
-        import numpy as np
-        return Intervalo(np.exp(self.lo),np.exp(self.hi))
+    return Intervalo(lo,self.hi)
+
+def log(self):
     
-    def sqrt(self):
-        import numpy as np
+    temp = recortar_intervalo(self)
+
+    if temp is not None:
+        return Intervalo(np.log(temp.lo),np.log(temp.hi))
+    raise ArithmeticError
         
-        if self.hi < 0:
-            print 'Error: el intervalo es puramente negativo'
-            return None
-        elif self.lo < 0:
-            print 'Advertencia: El intervalo incluye números negativos. Se modificará para comenzar en cero.'
-            self.lo = 0
+def exp(self):
+    return Intervalo(np.exp(self.lo),np.exp(self.hi))
+    
+def sqrt(self):
+
+    temp = recortar_intervalo(self)
+
+    if temp is not None:
+        return Intervalo(np.sqrt(temp.lo),np.sqrt(temp.hi))
+    raise ArithmeticError
         
-        return Intervalo(np.sqrt(self.lo),np.sqrt(self.hi))
-        
-    def arctan(self):
-        import numpy as np
-        return Intervalo(np.arctan(self.lo),np.arctan(self.hi))
+def arctan(self):
+    return Intervalo(np.arctan(self.lo),np.arctan(self.hi))
+
+def tan(self):
+    
+    if self.width() < 2*(np.pi) and np.tan(self.lo) <= np.tan(self.hi):
+        return Intervalo(np.tan(self.lo), np.tan(self.hi))
+    else:
+        print 'Advertencia: El intervalo contiene una singularidad'
+        return Intervalo(float("-inf"), float("inf"))
+
