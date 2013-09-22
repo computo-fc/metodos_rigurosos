@@ -6,12 +6,14 @@ from intervalo import *
 
 import numpy as np
 
-def TwoReals():
+from sympy import mpmath as mp
+
+def TwoReals(u=-10.0,v=10.0):
     """
     Funcion auxiliar para el test de intervalos con intervalos aleatorios
     """
-    num=np.random.uniform(-10.0,10.0)
-    num2=np.random.uniform(-10.0,10.0)
+    num=np.random.uniform(u,v)
+    num2=np.random.uniform(u,v)
     
     #El if siguiente se hace asumiendo que al definir el objeto intervalo incorrectamente
     #este no volteara los valores.
@@ -304,3 +306,35 @@ def test_hull():
 ##    plt.xlim(min(mins)-1.0,max(maxs)+1.0)
 ##    #plt.ylim(y-0.5,y+0.5)
 ##    return plt.show()
+
+def test_exp():
+    """
+    Se verifica que la operacion exponencial funcione.
+    """
+    num, num2 = TwoReals()
+
+    a = mp.exp(num)
+    b = mp.exp(num2)
+    c = Intervalo(num, num2).exp()
+    assert a == c.lo and b == c.hi
+
+def test_log():
+    """
+    Se verifica que la operacion logaritmo funcione.
+    """
+    num, num2 = TwoReals()
+
+    try:
+      a = mp.log(num)
+      b = mp.log(num2)
+      c = Intervalo(num, num2).log()
+      assert a == c.lo and b == c.hi 
+      
+    except ValueError: # num2 < 0:
+	pass
+      
+    except:	# num < 0 and num2 >= 0:
+	a = mp.log(num + np.abs(num))
+	b = mp.log(num2)
+	c=Intervalo(num, num2).log()
+	assert a == c.lo and b == c.hi    

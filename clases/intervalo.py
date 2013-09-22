@@ -272,3 +272,35 @@ class Intervalo(object):
     
     def hull(self, otro):
         return Intervalo(min(self.lo,otro.lo),max(self.hi,otro.hi))
+
+    ##Funciones elementales para intervalos.
+            
+    def exp(self):
+	"""
+        Calcula la exponencial de un intervalo
+        """
+	from sympy import mpmath as mp
+	
+        return Intervalo(mp.exp(self.lo), mp.exp(self.hi))
+
+    def log(self):
+	"""
+	Calcula el logaritmo de un intervalo
+	"""
+	from sympy import mpmath as mp
+	
+	Dom_log = Intervalo(0,mp.inf)
+		
+	if self.lo >= 0 :
+	  return Intervalo(mp.log(self.lo), mp.log(self.hi))
+	
+
+	elif self.hi < 0:
+	  raise ValueError("La función logaritmo no puede tomar intervalos totalmente negativos. El intervalo [%f,%f] es negativo." % (self.lo, self.hi) )
+	
+
+	elif self.lo < 0 and self.hi >= 0:
+	  Dom_restr = Dom_log & Intervalo(self.lo,self.hi)
+	  print "WARNING: El intervalo contiene numeros negativos. Se toma el intervalo restringido [%f,%f]."\
+		% (Dom_restr.lo, Dom_restr.hi)
+	  return Intervalo(mp.log(Dom_restr.lo), mp.log(Dom_restr.hi))
