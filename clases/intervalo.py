@@ -276,6 +276,8 @@ class Intervalo(object):
         return Intervalo(min(self.lo,otro.lo),max(self.hi,otro.hi))
         
         
+#Aquí se definirán funciones sobre intervalos.        
+        
     def cos(self):
         
         import numpy as np
@@ -309,18 +311,11 @@ class Intervalo(object):
                         num,num2=num2,num
             
                         return Intervalo(num,num2)
-    
-    
-    
                         
-        
+def sin(self):
+    return Intervalo.cos(self-np.pi/2)
     
-        
-
-        
-        
-
-#Aquí se definirán funciones sobre intervalos.
+    
    
 def recortar_intervalo(self):
     """

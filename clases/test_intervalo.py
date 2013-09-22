@@ -4,6 +4,8 @@
 
 from intervalo import *
 
+import matplotlib.pyplot as plt
+
 import numpy as np
 
 def TwoReals():
@@ -352,3 +354,68 @@ def test_tan():
 ##    plt.xlim(min(mins)-1.0,max(maxs)+1.0)
 ##    #plt.ylim(y-0.5,y+0.5)
 ##    return plt.show()
+
+def graphic_cos(self):
+
+    '''
+    Comprobacion grafica para la funcion coseno, el input es un intervalo
+    y se mapea el mismo en el eje de las 'x' y al mismo tiempo se muestra el intervalo
+    resultado de aplicar el coseno en el eje de las 'y'
+    '''
+    
+    x=np.linspace(self.lo-3,self.hi+3,10000)
+    y=np.cos(x)
+    plt.figure()
+    co=Intervalo.cos(self)
+    xx=[self.lo,self.hi]
+    yy=[0,0]
+    xX=[self.middle(),self.middle()]
+    yY=[co.lo,co.hi]
+    plt.plot(xx,yy)
+    plt.plot(xX,yY)
+    plt.plot(x,y)
+    plt.show()
+    
+def test_cos():
+    
+    '''
+    Se realiza el test de coseno con 100 intervalos aleatorios
+    '''
+    
+    for i in range(1,100):
+    
+        num,num2=TwoReals()
+    
+        a=Intervalo(num,num2)
+    
+        b=Intervalo.cos(a)
+        
+        if a.width()>=2*np.pi:
+            assert b.lo==-1.0 and b.hi==1.0
+    
+
+            
+        else:
+            
+            num,num2=np.mod(num,2*np.pi), np.mod(num2,2*np.pi)
+        
+            if (num2<num)and(num>np.pi):
+                assert b.lo==min(np.cos(num),np.cos(num2)) and  b.hi==1.0
+            
+            else:
+                
+                if (num2<num)and(num<=np.pi):
+                    assert b.lo==-1.0 and b.hi==1.0
+        
+                if num2>np.pi and num<np.pi:
+                    assert b.lo==-1 and b.hi==max(np.cos(num),np.cos(num2))
+            
+                else:
+                    num=np.cos(num)
+                    num2=np.cos(num2)
+        
+                    if num2<num:
+                        num,num2=num2,num
+        
+                        assert b.lo==num and b.hi==num2
+
