@@ -273,3 +273,98 @@ class Intervalo(object):
     def hull(self, otro):
         return Intervalo(min(self.lo,otro.lo),max(self.hi,otro.hi))
 
+#Aquí se definirán funciones sobre intervalos.        
+        
+    def cos(self):
+        
+        import numpy as np
+        
+        #Se mapea el intervalo
+        
+        if self.width()>=2*np.pi:
+            return Intervalo(-1,1)
+            
+        else:
+            
+            num,num2=np.mod(self.lo,2*np.pi), np.mod(self.hi,2*np.pi)
+        
+            if (num2<num)and(num>np.pi):
+                return Intervalo(min(np.cos(num),np.cos(num2)),1.0)
+            
+            else:
+                
+                if (num2<num)and(num<=np.pi):
+                    return Intervalo(-1.0,1.0)
+        
+                if num2>np.pi and num<np.pi:
+                    return Intervalo(-1,max(np.cos(num),np.cos(num2)))
+            
+                else:
+        
+                    num=np.cos(num)
+                    num2=np.cos(num2)
+        
+                    if num2<num:
+                        num,num2=num2,num
+            
+                        return Intervalo(num,num2)
+
+						
+    
+def chop(X):
+        middle_pos = X.middle()
+        right_part = Intervalo(X.lo, middle_pos)
+        left_part = Intervalo(middle_pos,X.hi)
+        return right_part, left_part
+    
+
+def chop_epsilon(X,f,epsilon,l=[]):
+    if f(X) is not None:
+        if f(X).width() < epsilon:
+            l.append(X)
+        else:
+          right_part, left_part = chop(X)
+          chop_epsilon(right_part,f,epsilon,l)
+          chop_epsilon(left_part,f,epsilon,l)
+    return l
+
+        
+def creater_bigest(list_of_X):
+    hi = list_of_X[0].hi
+    lo = list_of_X[0].lo
+    for x in list_of_X:
+        if x.lo <= lo:
+            lo = x.lo
+        if x.hi >= hi:
+            hi = x.hi
+    return Intervalo(lo,hi)
+
+def plot_with_f(list_of_X,f,zoom=1):
+    import matplotlib.pyplot as plt
+    from matplotlib.path import Path
+    import matplotlib.patches as patches
+    from numpy import arange
+    from numpy import cos
+    #zoom=zoom*-1.
+    def get_verts(X,f):
+        verts = [ (X.lo, f(X).lo),(X.lo, f(X).hi),(X.hi, f(X).hi),(X.hi, f(X).lo),(0., 0.),]
+        return verts
+        
+    
+    codes = [Path.MOVETO, Path.LINETO, Path.LINETO, Path.LINETO, Path.CLOSEPOLY,]
+    fig = plt.figure()
+    ax = fig.add_subplot(111)
+    
+    for X in list_of_X:
+        path = Path(get_verts(X,f), codes)
+        patch = patches.PathPatch(path, facecolor='orange', lw=2)
+        ax.add_patch(patch)
+    
+    big_X = creater_bigest(list_of_X)
+    
+    x = arange(big_X.lo,big_X.hi,.01)
+    ax.plot(x,f(x))
+    
+    ax.set_xlim(big_X.lo,big_X.hi)
+    ax.set_ylim(f(big_X).lo*zoom,f(big_X).hi*zoom) 
+    plt.show()

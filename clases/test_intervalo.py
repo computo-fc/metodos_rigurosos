@@ -304,3 +304,10 @@ def test_hull():
 ##    plt.xlim(min(mins)-1.0,max(maxs)+1.0)
 ##    #plt.ylim(y-0.5,y+0.5)
 ##    return plt.show()
+
+def test_chop():
+    from numpy import cos
+    from numpy import pi
+    l = []
+    l = chop_epsilon(Intervalo(-2*pi,2*pi),cos,.25,l)
+    plot_with_f(l,cos,3)
