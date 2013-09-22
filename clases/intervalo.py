@@ -1,5 +1,7 @@
 # -*- coding: utf-8 -*- 
 
+import numpy as np
+
 class Intervalo(object):
     """
     Se define la clase 'Intervalo', y los métodos para la aritmética básica de intervalos,
@@ -317,4 +319,52 @@ class Intervalo(object):
 
         
         
+
+#Aquí se definirán funciones sobre intervalos.
+   
+def recortar_intervalo(self):
+    """
+    Función que recorta un intervalo a valores no negativos, o levanta 
+    un error si el intervalo es completamente negativo
+    """
+    lo = self.lo
+
+    if self.hi < 0:
+        print 'Error: el intervalo es puramente negativo'
+        return None
+    elif self.lo < 0:
+        print 'Advertencia: El intervalo incluye números negativos. Se modificará para comenzar en cero.'
+        lo = 0
+    
+    return Intervalo(lo,self.hi)
+
+def log(self):
+    
+    temp = recortar_intervalo(self)
+
+    if temp is not None:
+        return Intervalo(np.log(temp.lo),np.log(temp.hi))
+    raise ArithmeticError
+        
+def exp(self):
+    return Intervalo(np.exp(self.lo),np.exp(self.hi))
+    
+def sqrt(self):
+
+    temp = recortar_intervalo(self)
+
+    if temp is not None:
+        return Intervalo(np.sqrt(temp.lo),np.sqrt(temp.hi))
+    raise ArithmeticError
+        
+def arctan(self):
+    return Intervalo(np.arctan(self.lo),np.arctan(self.hi))
+
+def tan(self):
+    
+    if self.width() < 2*(np.pi) and np.tan(self.lo) <= np.tan(self.hi):
+        return Intervalo(np.tan(self.lo), np.tan(self.hi))
+    else:
+        print 'Advertencia: El intervalo contiene una singularidad'
+        return Intervalo(float("-inf"), float("inf"))
 

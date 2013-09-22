@@ -287,6 +287,54 @@ def test_hull():
     ##plot_intevalo(b)
     assert (a.lo==min(min(num),min(num2))) & (a.hi==max(max(num),max(num2)))
 
+def test_log():
+    num = np.random.uniform(0,10.0)
+    num2 = np.random.uniform(0,10.0)
+    a = Intervalo(num,num2)
+    
+    result = log(a)
+
+    assert result.lo == np.log(a.lo) and result.hi == np.log(a.hi)
+
+def test_exp():
+    num,num2 = TwoReals()
+    a = Intervalo(num,num2)
+
+    result = exp(a)
+
+    assert result.lo == np.exp(a.lo) and result.hi == np.exp(a.hi)
+    assert log(result) == a
+
+def test_sqrt():
+    num = np.random.uniform(0,10.0)
+    num2 = np.random.uniform(0,10.0)
+    a = Intervalo(num,num2)
+    
+    result = sqrt(a)
+
+    assert result.lo == np.sqrt(a.lo) and result.hi == np.sqrt(a.hi)
+    
+    cuadrado = result*result
+    assert (abs(cuadrado.lo - a.lo)) < 0.000000000001 and (abs(cuadrado.hi - a.hi)) < 0.000000000001
+
+def test_arctan():
+    num,num2 = TwoReals()
+    a = Intervalo(num,num2)
+
+    result = arctan(a)
+
+    assert result.lo == np.arctan(a.lo) and result.hi == np.arctan(a.hi)
+
+def test_tan():
+    num,num2 = TwoReals()
+    a = Intervalo(num,num2)
+
+    arcotan = arctan(a)
+
+    result = tan(arcotan)
+    print result - a
+    assert (abs(result.lo - a.lo)) < 0.000000000001 and (abs(result.hi - a.hi)) < 0.000000000001
+
 ##def plot_intevalo(a,y=0):
 ##    from matplotlib import pyplot as plt
 ##    mins=[]
