@@ -1,4 +1,3 @@
-
 # -*- coding: utf-8 -*- 
 
 class Intervalo(object):
@@ -47,7 +46,7 @@ class Intervalo(object):
     def __radd__(self, otro):
         return self + otro
         
-        
+
         
     def __mul__(self, otro):
       
@@ -189,9 +188,9 @@ class Intervalo(object):
 
     #division con denominadores que no contienen al cero    
     def __div__(self, otro):
-	"""
-	División
-	"""
+    	"""
+        División
+    	"""
         if not isinstance(otro, Intervalo):
             otro = Intervalo(otro)
 
@@ -203,9 +202,9 @@ class Intervalo(object):
     
     #división reversa
     def __rdiv__(self, otro):
-	"""
-	División revrsa para poder usar floats en el numerador
-	"""
+        """
+    	División revrsa para poder usar floats en el numerador
+        """
         if not isinstance(otro, Intervalo):
             otro = Intervalo(otro)
 
@@ -233,4 +232,44 @@ class Intervalo(object):
     def abs(self):
         
         return max([abs(self.lo),abs(self.hi)])
+
+    
+    #Relación < de intervalos.
+    def __lt__(self,otro):
+        """Relación < de intervalos."""
+        
+        try:
+            return self.hi < otro.lo
+        except:
+            return self < Intervalo(otro)
+
+    #Relación > de intervalos.
+    def __gt__(self,otro):
+        """Relación > de intervalos."""
+        
+        try:
+            return self.lo > otro.hi
+        except:
+            return self > Intervalo(otro)
+
+    #Relación <= de intervalos.
+    def __le__(self,otro):
+	"""Relación <= de intervalos"""
+	
+        try: 
+            return (self.lo <= otro.lo) and self.hi <= otro.hi	
+        except: 
+            return self <= Intervalo(otro)
+
+    #Relación >= de intervalos.
+    def __ge__(self,otro):
+	"""Relación >= de intervalos"""
+	
+        try:
+            return (self.lo >= otro.lo) and self.hi >= otro.hi
+        except: 
+            return self >= Intervalo(otro)
+    
+    def hull(self, otro):
+        return Intervalo(min(self.lo,otro.lo),max(self.hi,otro.hi))
 
