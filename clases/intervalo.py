@@ -1,4 +1,3 @@
-
 # -*- coding: utf-8 -*- 
 
 class Intervalo(object):
@@ -47,7 +46,7 @@ class Intervalo(object):
     def __radd__(self, otro):
         return self + otro
         
-        
+
         
     def __mul__(self, otro):
       
@@ -189,9 +188,9 @@ class Intervalo(object):
 
     #division con denominadores que no contienen al cero    
     def __div__(self, otro):
-	"""
-	División
-	"""
+    	"""
+        División
+    	"""
         if not isinstance(otro, Intervalo):
             otro = Intervalo(otro)
 
@@ -203,9 +202,9 @@ class Intervalo(object):
     
     #división reversa
     def __rdiv__(self, otro):
-	"""
-	División revrsa para poder usar floats en el numerador
-	"""
+        """
+    	División revrsa para poder usar floats en el numerador
+        """
         if not isinstance(otro, Intervalo):
             otro = Intervalo(otro)
 
@@ -234,3 +233,91 @@ class Intervalo(object):
         
         return max([abs(self.lo),abs(self.hi)])
 
+    
+    #Relación < de intervalos.
+    def __lt__(self,otro):
+        """Relación < de intervalos."""
+        
+        try:
+            return self.hi < otro.lo
+        except:
+            return self < Intervalo(otro)
+
+    #Relación > de intervalos.
+    def __gt__(self,otro):
+        """Relación > de intervalos."""
+        
+        try:
+            return self.lo > otro.hi
+        except:
+            return self > Intervalo(otro)
+
+    #Relación <= de intervalos.
+    def __le__(self,otro):
+	"""Relación <= de intervalos"""
+	
+        try: 
+            return (self.lo <= otro.lo) and self.hi <= otro.hi	
+        except: 
+            return self <= Intervalo(otro)
+
+    #Relación >= de intervalos.
+    def __ge__(self,otro):
+	"""Relación >= de intervalos"""
+	
+        try:
+            return (self.lo >= otro.lo) and self.hi >= otro.hi
+        except: 
+            return self >= Intervalo(otro)
+    
+    def hull(self, otro):
+        return Intervalo(min(self.lo,otro.lo),max(self.hi,otro.hi))
+        
+    import numpy as np
+    from scipy import inf
+    
+    def cos(self):
+    """
+    Coseno
+    """
+    if ( self.hi - self.lo) >= ((2) * (np.pi)):
+        return Intervalo(-1,1)
+
+    k = np.floor( (self.lo) / (2 * (np.pi)) )    
+    
+    else:
+        if ( self.hi - k*2*np.pi <= np.pi ):
+            return Intervalo(np.cos(self.hi), np.cos(self.lo))
+        
+        elif ( self.lo - k*2*np.pi  <= np.pi <= self.hi - k*2*np.pi <= 2*np.pi ):
+            return Intervalo( -1, max(np.cos(self.lo), np.cos(self.hi)))
+        
+        elif ( self.lo - k*2* np.pi <= np.pi <= 2*np.pi <= self.hi - k*2*np.pi ):
+            return Intervalo( -1, 1)
+        
+        elif ( np.pi <= ( self.lo - k*2*np.pi <= self.hi - k*2*np.pi <= 2*np.pi ):
+            return Intervalo( np.cos(self.lo), np.cos(self.hi))
+        
+        elif ( np.pi <= self.lo - k*2*np.pi <= 2*np.pi <=  self.hi - k*2*np.pi <= 3*np.pi ):
+            return Intervalo( min(np.cos(self.lo), np.cos(self.hi)), 1)
+        
+        elif ( np.pi <= self.lo - k*2*np.pi <= 3*np.pi <= self.hi - k*2*np.pi <= 3*np.pi ):
+            return Intervalo( -1, 1)
+
+    def tan(self):
+        """
+        Función tangente para intervalos
+        """
+        
+        if self.width() >= 2*np.pi:
+            return Intervalo(-inf, inf)
+        
+        if np.floor((self.lo + np.pi/2)/np.pi) == np.floor((self.hi + np.pi/2)/np.pi):
+            return Intervalo(np.tan(self.lo), np.tan(self.hi))
+        
+        else:
+            print "Warning: se tiene un intervalo degenerado"
+            return Intervalo(self.lo, inf), Intervalo(-inf, self.hi)     
+        
+        
+            
