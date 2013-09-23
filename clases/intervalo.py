@@ -368,3 +368,19 @@ def plot_with_f(list_of_X,f,zoom=1):
     ax.set_xlim(big_X.lo,big_X.hi)
     ax.set_ylim(f(big_X).lo*zoom,f(big_X).hi*zoom) 
     plt.show()
+
+def chop_parts(X,parts):
+    l = []
+    if str(parts).isdigit():
+        from math import floor
+        from numpy import arange
+    
+        spacing = X.width()/parts
+        lo = X.lo
+        hi = X.lo + spacing
+        print spacing
+        for x in arange(0,parts,1):
+            l.append(Intervalo(lo,hi))
+            lo = lo + spacing
+            hi = hi + spacing
+        return l

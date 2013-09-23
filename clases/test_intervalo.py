@@ -311,3 +311,20 @@ def test_chop():
     l = []
     l = chop_epsilon(Intervalo(-2*pi,2*pi),cos,.25,l)
     plot_with_f(l,cos,3)
+	
+def test_chop_epsilon(X,f,epsilon,zoom):
+    l = []
+    l = chop_epsilon(X,f,epsilon,l)
+    plot_with_f(l,f,zoom)
+    
+def test_chop_parts(X,f,parts,zoom):
+    l = []
+    l = chop_parts(X,parts)
+    plot_with_f(l,f,zoom)
+    print l
+    
+def test_chops():
+    from numpy import pi
+    from numpy import cos
+    test_chop_parts(Intervalo(-2*pi,2*pi),cos,8,3)
+    test_chop_epsilon(Intervalo(-2*pi,2*pi),cos,.25,3)
