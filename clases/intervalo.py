@@ -295,13 +295,13 @@ class Intervalo(object):
         elif ( self.lo - k*2* np.pi <= np.pi <= 2*np.pi <= self.hi - k*2*np.pi ):
             return Intervalo( -1, 1)
         
-        elif ( np.pi <= ( self.lo - k*2*np.pi <= self.hi - k*2*np.pi <= 2*np.pi ):
+        elif ( np.pi <=  self.lo - k*2*np.pi <= self.hi - k*2*np.pi <= 2*np.pi ):
             return Intervalo( np.cos(self.lo), np.cos(self.hi))
         
         elif ( np.pi <= self.lo - k*2*np.pi <= 2*np.pi <=  self.hi - k*2*np.pi <= 3*np.pi ):
             return Intervalo( min(np.cos(self.lo), np.cos(self.hi)), 1)
         
-        elif ( np.pi <= self.lo - k*2*np.pi <= 3*np.pi <= self.hi - k*2*np.pi <= 3*np.pi ):
+        elif ( np.pi <= self.lo - k*2*np.pi <= 2*np.pi <= 3*np.pi <= self.hi - k*2*np.pi ):
             return Intervalo( -1, 1)
 
     def tan(self):
