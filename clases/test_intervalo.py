@@ -1,7 +1,7 @@
 # -*- coding: utf-8 -*- 
 
 # Escribimos funciones con el nombre test_ALGO
-
+from sympy import mpmath as mp
 from intervalo import *
 
 import numpy as np
@@ -304,3 +304,39 @@ def test_hull():
 ##    plt.xlim(min(mins)-1.0,max(maxs)+1.0)
 ##    #plt.ylim(y-0.5,y+0.5)
 ##    return plt.show()
+
+def test_exp():
+    """
+    Se verifica que la operacion exponancial funcione
+    """
+    num, num2 = TwoReals()
+
+    a = mp.exp(num)
+    b = mp.exp(num2)
+    c = Intervalo(num, num2).exp()
+    assert a == c.lo and b == c.hi
+
+def test_log():
+    """
+    Se verifica que la operacion logaritmo funcione.
+    """
+
+    num, num2 = TwoReals()
+    
+
+    try:
+      a = mp.log(num)
+      b = mp.log(num2)
+      c=Intervalo(num, num2).log()
+      assert a == c.lo and b == c.hi 
+    except: 
+      if num2 < 0:
+	pass
+	#Debemos checar que se de el ValueError
+      elif num < 0 and num2 >= 0:
+	a = mp.log(num + np.abs(num))
+	b = mp.log(num2)
+	c=Intervalo(num, num2).log()
+	assert a == c.lo and b == c.hi 
+      
+    

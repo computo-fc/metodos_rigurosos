@@ -1,5 +1,5 @@
 # -*- coding: utf-8 -*- 
-
+from sympy import mpmath as mp
 class Intervalo(object):
     """
     Se define la clase 'Intervalo', y los métodos para la aritmética básica de intervalos,
@@ -85,21 +85,9 @@ class Intervalo(object):
                 if otro.lo >= 0:
                     return Intervalo(self.lo * otro.hi , self.hi * otro.hi)
                 elif otro.hi <= 0:
-                    return Intervalo(self.hi * otro.lo , self.lo * otro.lo)
-           
-            #si no se cumplen las anteriores entonces
-            #otro.lo <= 0 <= otro.hi
-                elif otro.lo <= self.lo and otro.hi >= 0:   #en este punto se debe tener otro.lo<=0
-                    if self.hi <= otro.hi :                 #implica que otro.hi>0
-                        return Intervalo(self.hi * otro.lo , max(self.hi * otro.hi , self.lo*otro.lo))
-                    elif  otro.hi <= self.hi:               #tal vez poner 0 <= otro.hi and
-                        return Intervalo(self.hi * otro.lo , self.lo * otro.lo)
-                
-                elif self.lo <= otro.lo :
-                    if otro.hi >=0 :
-                        return Intervalo(self.lo * otro.hi , max(self.lo * otro.lo , self.hi * otro.hi))
-                    elif otro.hi <= 0:
-                        return Intervalo(self.hi * otro.lo , self.lo * otro.lo)
+                    return Intervalo(self.hi * otro.lo , self.lo * otro.lo)         
+                elif otro.lo <= 0 and otro.hi >= 0:   
+                    return Intervalo(min(self.hi * otro.lo , self.lo * otro.hi) , max(self.hi * otro.hi , self.lo * otro.lo))
                     
         except:
             return self * Intervalo(otro)
@@ -254,7 +242,7 @@ class Intervalo(object):
 
     #Relación <= de intervalos.
     def __le__(self,otro):
-	"""Relación <= de intervalos"""
+    	"""Relación <= de intervalos"""
 	
         try: 
             return (self.lo <= otro.lo) and self.hi <= otro.hi	
@@ -263,7 +251,7 @@ class Intervalo(object):
 
     #Relación >= de intervalos.
     def __ge__(self,otro):
-	"""Relación >= de intervalos"""
+    	"""Relación >= de intervalos"""
 	
         try:
             return (self.lo >= otro.lo) and self.hi >= otro.hi
@@ -273,3 +261,34 @@ class Intervalo(object):
     def hull(self, otro):
         return Intervalo(min(self.lo,otro.lo),max(self.hi,otro.hi))
 
+    #funciones elementales para intervalos
+      
+    def exp(self):
+    	"""
+    	Calcula la exponencial de un intervalo.
+    	"""
+	
+        return Intervalo(mp.exp(self.lo), mp.exp(self.hi))
+
+
+
+    def log(self):
+    	"""
+    	Calcula el logaritmo de un intervalo.
+    	"""
+    	
+    	Dom_log = Intervalo(0,mp.inf)
+    		
+    	if self.lo >= 0 :
+    	   return Intervalo(mp.log(self.lo), mp.log(self.hi))
+    	
+
+    	elif self.hi < 0:
+    	   raise ValueError("La función logaritmo no puede tomar intervalos totalmente negativos. El intervalo [%f,%f] es negativo." % (self.lo, self.hi) )
+    	
+
+    	elif self.lo < 0 and self.hi >= 0:
+            Dom_restr = Dom_log & Intervalo(self.lo,self.hi)
+            print "WARNING: El intervalo contiene numeros negativos. Se toma el intervalo restringido [%f,%f]."\
+                % (Dom_restr.lo, Dom_restr.hi)
+            return Intervalo(mp.log(Dom_restr.lo), mp.log(Dom_restr.hi))
