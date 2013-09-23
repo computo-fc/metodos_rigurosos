@@ -1,4 +1,4 @@
-# -*- coding: utf-8 -*- 
+﻿# -*- coding: utf-8 -*- 
 
 class Intervalo(object):
     """
@@ -344,11 +344,13 @@ def plot_with_f(list_of_X,f,zoom=1):
     from matplotlib.path import Path
     import matplotlib.patches as patches
     from numpy import arange
-    from numpy import cos
-    #zoom=zoom*-1.
+
     def get_verts(X,f):
-        verts = [ (X.lo, f(X).lo),(X.lo, f(X).hi),(X.hi, f(X).hi),(X.hi, f(X).lo),(0., 0.),]
-        return verts
+        try:
+            verts = [ (X.lo, f(X).lo),(X.lo, f(X).hi),(X.hi, f(X).hi),(X.hi, f(X).lo),(0., 0.),]
+            return verts
+        except AttributeError:
+            return  [ (0., 0.),(0., 0.),(0., 0.),(0., 0.),(0., 0.),]
         
     
     codes = [Path.MOVETO, Path.LINETO, Path.LINETO, Path.LINETO, Path.CLOSEPOLY,]
@@ -368,6 +370,7 @@ def plot_with_f(list_of_X,f,zoom=1):
     ax.set_xlim(big_X.lo,big_X.hi)
     ax.set_ylim(f(big_X).lo*zoom,f(big_X).hi*zoom) 
     plt.show()
+
 
 def chop_parts(X,parts):
     l = []
