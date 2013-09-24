@@ -309,7 +309,7 @@ class Intervalo(object):
         Función tangente para intervalos
         """
         
-        if self.width() >= 2*np.pi:
+        if self.width() >= np.pi:
             return Intervalo(-inf, inf)
         
         if np.floor((self.lo + np.pi/2)/np.pi) == np.floor((self.hi + np.pi/2)/np.pi):
@@ -317,4 +317,4 @@ class Intervalo(object):
         
         else:
             print "Warning: se tiene un intervalo degenerado"
-            return Intervalo(self.lo, inf), Intervalo(-inf, self.hi)     
+            return Intervalo(np.tan(self.lo), inf), Intervalo(-inf, np.tan(self.hi))     
