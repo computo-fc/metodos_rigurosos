@@ -304,3 +304,37 @@ def test_hull():
 ##    plt.xlim(min(mins)-1.0,max(maxs)+1.0)
 ##    #plt.ylim(y-0.5,y+0.5)
 ##    return plt.show()
+
+def test_coseno():
+    """
+    Prueba no aleatoria del Coseno
+    """
+    
+    pi = np.pi
+    
+    a = Intervalo(2 * pi)
+    b = Intervalo(2 * pi, 4 * pi)
+    c = Intervalo((1./2) * pi)
+    d = Intervalo(4 * pi, (17./4) * pi)
+    e = Intervalo((19) * pi, (39./2) * pi)
+    f = Intervalo((-3./2) * pi, - pi)
+    g = Intervalo((-5./2) * pi, (-3./2) * pi)
+    h = Intervalo((-1./2) * pi,(-1./4) * pi)
+    
+    cosa = a.cos()
+    cosb = b.cos()
+    cosc = c.cos()
+    cosd = d.cos()
+    cose = e.cos()
+    cosf = f.cos()
+    cosg = g.cos()
+    cosh = h.cos()
+    
+    assert cosa.lo == 1 and cosa.hi == 1 
+    assert cosb.lo == -1 and cosb.hi == 1 
+    assert cosc.lo == np.cos(pi * (1./2)) and cosc.hi == np.cos(pi * (1./2)) 
+    assert cosd.lo == np.cos((17./4) * pi) and cosd.hi == 1 
+    assert cose.lo == -1 and cose.hi == np.cos((39./2) * pi) 
+    assert cosf.lo == -1 and cosf.hi == np.cos((3./2) * pi)
+    assert cosg.lo == min(np.cos((1./2) * pi), np.cos((3./2) * np.pi)) and cosg.hi == 1 
+    assert cosh.lo == np.cos((-1./2) * pi) and cosh.hi == np.cos((-1./4) * pi) 	
