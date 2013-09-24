@@ -273,41 +273,45 @@ class Intervalo(object):
     def hull(self, otro):
         return Intervalo(min(self.lo,otro.lo),max(self.hi,otro.hi))
         
-    import numpy as np
-    from scipy import inf
     
-    def cos(self):
-    """
-    Coseno
-    """
-    if self.width() >= (2 * np.pi):
-      return Intervalo(-1,1)
+    def cos(self):  
+      """
+      Coseno
+      """
+      
+      import numpy as np
+    
+      if self.width() >= (2 * np.pi):
+	return Intervalo(-1,1)
         
-    else:
-      k = np.floor( (self.lo) / (2 * (np.pi)) )
+      else:
+	k = np.floor( (self.lo) / (2 * (np.pi)) )
             
-      if ( self.hi - k*2*np.pi <= np.pi ):
-	return Intervalo(np.cos(self.hi), np.cos(self.lo))
+	if ( self.hi - k*2*np.pi <= np.pi ):
+	  return Intervalo(np.cos(self.hi), np.cos(self.lo))
         
-      elif ( self.lo - k*2*np.pi  <= np.pi <= self.hi - k*2*np.pi <= 2*np.pi ):
-	return Intervalo(-1, max(np.cos(self.lo), np.cos(self.hi)))
+	elif ( self.lo - k*2*np.pi  <= np.pi <= self.hi - k*2*np.pi <= 2*np.pi ):
+	  return Intervalo(-1, max(np.cos(self.lo), np.cos(self.hi)))
         
-      elif ( self.lo - k*2* np.pi <= np.pi <= 2*np.pi <= self.hi - k*2*np.pi ):
-        return Intervalo(-1, 1)
+	elif ( self.lo - k*2* np.pi <= np.pi <= 2*np.pi <= self.hi - k*2*np.pi ):
+	  return Intervalo(-1, 1)
         
-      elif ( np.pi <=  self.lo - k*2*np.pi <= self.hi - k*2*np.pi <= 2*np.pi ):
-        return Intervalo(np.cos(self.lo), np.cos(self.hi))
+	elif ( np.pi <=  self.lo - k*2*np.pi <= self.hi - k*2*np.pi <= 2*np.pi ):
+	  return Intervalo(np.cos(self.lo), np.cos(self.hi))
         
-      elif ( np.pi <= self.lo - k*2*np.pi <= 2*np.pi <=  self.hi - k*2*np.pi <= 3*np.pi ):
-        return Intervalo( min(np.cos(self.lo), np.cos(self.hi)), 1)
+	elif ( np.pi <= self.lo - k*2*np.pi <= 2*np.pi <=  self.hi - k*2*np.pi <= 3*np.pi ):
+	  return Intervalo( min(np.cos(self.lo), np.cos(self.hi)), 1)
         
-      elif ( np.pi <= self.lo - k*2*np.pi <= 2*np.pi <= 3*np.pi <= self.hi - k*2*np.pi ):
-        return Intervalo(-1, 1)
+	elif ( np.pi <= self.lo - k*2*np.pi <= 2*np.pi <= 3*np.pi <= self.hi - k*2*np.pi ):
+	  return Intervalo(-1, 1)
 
     def tan(self):
         """
         Función tangente para intervalos
         """
+        
+        import numpy as np
+        from scipy import inf
         
         if self.width() >= np.pi:
             return Intervalo(-inf, inf)
