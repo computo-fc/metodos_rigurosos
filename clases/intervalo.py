@@ -280,29 +280,29 @@ class Intervalo(object):
     """
     Coseno
     """
-    if ( self.hi - self.lo) >= ((2) * (np.pi)):
-        return Intervalo(-1,1)
-
-    k = np.floor( (self.lo) / (2 * (np.pi)) )    
-    
+    if self.width() >= (2 * np.pi):
+      return Intervalo(-1,1)
+        
     else:
-        if ( self.hi - k*2*np.pi <= np.pi ):
-            return Intervalo(np.cos(self.hi), np.cos(self.lo))
+      k = np.floor( (self.lo) / (2 * (np.pi)) )
+            
+      if ( self.hi - k*2*np.pi <= np.pi ):
+	return Intervalo(np.cos(self.hi), np.cos(self.lo))
         
-        elif ( self.lo - k*2*np.pi  <= np.pi <= self.hi - k*2*np.pi <= 2*np.pi ):
-            return Intervalo( -1, max(np.cos(self.lo), np.cos(self.hi)))
+      elif ( self.lo - k*2*np.pi  <= np.pi <= self.hi - k*2*np.pi <= 2*np.pi ):
+	return Intervalo(-1, max(np.cos(self.lo), np.cos(self.hi)))
         
-        elif ( self.lo - k*2* np.pi <= np.pi <= 2*np.pi <= self.hi - k*2*np.pi ):
-            return Intervalo( -1, 1)
+      elif ( self.lo - k*2* np.pi <= np.pi <= 2*np.pi <= self.hi - k*2*np.pi ):
+        return Intervalo(-1, 1)
         
-        elif ( np.pi <=  self.lo - k*2*np.pi <= self.hi - k*2*np.pi <= 2*np.pi ):
-            return Intervalo( np.cos(self.lo), np.cos(self.hi))
+      elif ( np.pi <=  self.lo - k*2*np.pi <= self.hi - k*2*np.pi <= 2*np.pi ):
+        return Intervalo(np.cos(self.lo), np.cos(self.hi))
         
-        elif ( np.pi <= self.lo - k*2*np.pi <= 2*np.pi <=  self.hi - k*2*np.pi <= 3*np.pi ):
-            return Intervalo( min(np.cos(self.lo), np.cos(self.hi)), 1)
+      elif ( np.pi <= self.lo - k*2*np.pi <= 2*np.pi <=  self.hi - k*2*np.pi <= 3*np.pi ):
+        return Intervalo( min(np.cos(self.lo), np.cos(self.hi)), 1)
         
-        elif ( np.pi <= self.lo - k*2*np.pi <= 2*np.pi <= 3*np.pi <= self.hi - k*2*np.pi ):
-            return Intervalo( -1, 1)
+      elif ( np.pi <= self.lo - k*2*np.pi <= 2*np.pi <= 3*np.pi <= self.hi - k*2*np.pi ):
+        return Intervalo(-1, 1)
 
     def tan(self):
         """
