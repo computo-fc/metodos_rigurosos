@@ -203,7 +203,7 @@ class Intervalo(object):
         if not isinstance(otro, Intervalo):
             otro = Intervalo(otro)
 
-        if otro.lo <= 0 <= otro.hi:
+        if 0 in otro:
             raise ZeroDivisionError
 
         else:
@@ -222,18 +222,24 @@ class Intervalo(object):
     def __pow__(self, alpha):
         """
         Potencia con exponentes reales o enteros
+        alpha: exponente
         """
-        if isinstance(alpha, int):
-            #exponente entero
+        
+        if alpha == int(alpha):
+            # caso donde el exponente es entero, en este caso los flotantes que pueden ser
+            # igualados a su forma entera entran en esta categoría (e.g. 2.0 == 2)
+            
             return pow_int(self, alpha)
-
-        elif isinstance(alpha, float):
-            #exponente real
-            return pow_real(self, alpha)
-
-        else:
+            
+        elif isinstance(alpha, Intervalo):
+            # caso donde el exponente es de la clase intervalo
+            
             print 'Error: El exponente no es de la clase apropiada'
             return None
+            
+        else:
+            # cualquier otro caso el exponente se toma como real
+            return pow_real(self, alpha)
 
     def middle(self):
         """
@@ -439,7 +445,7 @@ def pow_int(self, n):
             print 'Advertencia: El intervalo contiene el cero'
             return Intervalo(0, max(self.lo**n, self.hi**n))
     elif n == 0:
-        return Intervalo(1,1)
+        return Intervalo(1)
     else: # n < 0:
         # para este caso es importante notar que la funcion reciprocal() no admite intervalos que contengan el cero,
         # por lo que primero restringiremos el intervalo a reales positivos
