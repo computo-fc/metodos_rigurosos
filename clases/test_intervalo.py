@@ -1,7 +1,7 @@
 # -*- coding: utf-8 -*- 
 
 # Escribimos funciones con el nombre test_ALGO
-
+from sympy import mpmath as mp
 from intervalo import *
 
 import matplotlib.pyplot as plt
@@ -289,24 +289,6 @@ def test_hull():
     ##plot_intevalo(b)
     assert (a.lo==min(min(num),min(num2))) & (a.hi==max(max(num),max(num2)))
 
-def test_log():
-    num = np.random.uniform(0,10.0)
-    num2 = np.random.uniform(0,10.0)
-    a = Intervalo(num,num2)
-    
-    result = log(a)
-
-    assert result.lo == np.log(a.lo) and result.hi == np.log(a.hi)
-
-def test_exp():
-    num,num2 = TwoReals()
-    a = Intervalo(num,num2)
-
-    result = exp(a)
-
-    assert result.lo == np.exp(a.lo) and result.hi == np.exp(a.hi)
-    assert log(result) == a
-
 def test_sqrt():
     num = np.random.uniform(0,10.0)
     num2 = np.random.uniform(0,10.0)
@@ -355,6 +337,51 @@ def test_tan():
 ##    #plt.ylim(y-0.5,y+0.5)
 ##    return plt.show()
 
+
+def test_exp():
+    num,num2 = TwoReals()
+    a = Intervalo(num,num2)
+
+    result = exp(a)
+
+    assert result.lo == np.exp(a.lo) and result.hi == np.exp(a.hi)
+    assert log(result) == a
+
+
+# def test_log():
+#     num = np.random.uniform(0,10.0)
+#     num2 = np.random.uniform(0,10.0)
+#     a = Intervalo(num,num2)
+    
+#     result = log(a)
+
+#     assert result.lo == np.log(a.lo) and result.hi == np.log(a.hi)
+
+
+def test_log():
+    """
+    Se verifica que la operacion logaritmo funcione.
+    """
+
+    num, num2 = TwoReals()
+    
+
+    try:
+      a = mp.log(num)
+      b = mp.log(num2)
+      c=Intervalo(num, num2).log()
+      assert a == c.lo and b == c.hi 
+    except: 
+      if num2 < 0:
+	pass
+	#Debemos checar que se de el ValueError
+      elif num < 0 and num2 >= 0:
+	a = mp.log(num + np.abs(num))
+	b = mp.log(num2)
+	c=Intervalo(num, num2).log()
+	assert a == c.lo and b == c.hi 
+      
+    
 def graphic_cos(self):
 
     '''

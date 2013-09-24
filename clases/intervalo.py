@@ -1,6 +1,10 @@
 # -*- coding: utf-8 -*- 
 
-import numpy as np
+# from sympy import mpmath as mp
+# import numpy as np
+
+import numpy
+math = numpy    # NB!
 
 class Intervalo(object):
     """
@@ -29,8 +33,13 @@ class Intervalo(object):
         # Esta función sirve con 'print'
         return "[{},{}]".format(self.lo,self.hi)
 
+    # def _repr_html_(self):
+    #     return "[{}, {}]".format(self.lo, self.hi)
+
     def _repr_html_(self):
-        return "[{}, {}]".format(self.lo, self.hi)
+        reprn = "[{}, {}]".format(self.lo, self.hi)
+        reprn = reprn.replace("inf", r"&infin;")
+        return reprn
     
     def _repr_latex_(self):
         return "$[{}, {}]$".format(self.lo, self.hi)
@@ -87,21 +96,9 @@ class Intervalo(object):
                 if otro.lo >= 0:
                     return Intervalo(self.lo * otro.hi , self.hi * otro.hi)
                 elif otro.hi <= 0:
-                    return Intervalo(self.hi * otro.lo , self.lo * otro.lo)
-           
-            #si no se cumplen las anteriores entonces
-            #otro.lo <= 0 <= otro.hi
-                elif otro.lo <= self.lo and otro.hi >= 0:   #en este punto se debe tener otro.lo<=0
-                    if self.hi <= otro.hi :                 #implica que otro.hi>0
-                        return Intervalo(self.hi * otro.lo , max(self.hi * otro.hi , self.lo*otro.lo))
-                    elif  otro.hi <= self.hi:               #tal vez poner 0 <= otro.hi and
-                        return Intervalo(self.hi * otro.lo , self.lo * otro.lo)
-                
-                elif self.lo <= otro.lo :
-                    if otro.hi >=0 :
-                        return Intervalo(self.lo * otro.hi , max(self.lo * otro.lo , self.hi * otro.hi))
-                    elif otro.hi <= 0:
-                        return Intervalo(self.hi * otro.lo , self.lo * otro.lo)
+                    return Intervalo(self.hi * otro.lo , self.lo * otro.lo)         
+                elif otro.lo <= 0 and otro.hi >= 0:   
+                    return Intervalo(min(self.hi * otro.lo , self.lo * otro.hi) , max(self.hi * otro.hi , self.lo * otro.lo))
                     
         except:
             return self * Intervalo(otro)
@@ -256,7 +253,7 @@ class Intervalo(object):
 
     #Relación <= de intervalos.
     def __le__(self,otro):
-	"""Relación <= de intervalos"""
+    	"""Relación <= de intervalos"""
 	
         try: 
             return (self.lo <= otro.lo) and self.hi <= otro.hi	
@@ -265,7 +262,7 @@ class Intervalo(object):
 
     #Relación >= de intervalos.
     def __ge__(self,otro):
-	"""Relación >= de intervalos"""
+    	"""Relación >= de intervalos"""
 	
         try:
             return (self.lo >= otro.lo) and self.hi >= otro.hi
@@ -274,92 +271,113 @@ class Intervalo(object):
     
     def hull(self, otro):
         return Intervalo(min(self.lo,otro.lo),max(self.hi,otro.hi))
-        
-        
-#Aquí se definirán funciones sobre intervalos.        
+
+        # Aquí se definirán funciones sobre intervalos        
         
     def cos(self):
-        
-        import numpy as np
-        
-        #Se mapea el intervalo
-        
-        if self.width()>=2*np.pi:
-            return Intervalo(-1,1)
-            
-        else:
-            
-            num,num2=np.mod(self.lo,2*np.pi), np.mod(self.hi,2*np.pi)
-        
-            if (num2<num)and(num>np.pi):
-                return Intervalo(min(np.cos(num),np.cos(num2)),1.0)
-            
-            else:
-                
-                if (num2<num)and(num<=np.pi):
-                    return Intervalo(-1.0,1.0)
-        
-                if num2>np.pi and num<np.pi:
-                    return Intervalo(-1,max(np.cos(num),np.cos(num2)))
-            
-                else:
-        
-                    num=np.cos(num)
-                    num2=np.cos(num2)
-        
-                    if num2<num:
-                        num,num2=num2,num
-            
-                        return Intervalo(num,num2)
+
+        pi = math.pi
+
+        if self.width() >= 2*pi:
+            return Intervalo(-1, 1)
                         
-def sin(self):
-    return Intervalo.cos(self-np.pi/2)
+        num, num2 = math.mod(self.lo, 2*pi), math.mod(self.hi, 2*pi)
     
-    
-   
-def recortar_intervalo(self):
-    """
-    Función que recorta un intervalo a valores no negativos, o levanta 
-    un error si el intervalo es completamente negativo
-    """
-    lo = self.lo
+        if num2 < num:
+            if num >= pi:
+                return Intervalo(min(math.cos(num), math.cos(num2)), 1.0)
+            
+            else: 
+                return Intervalo(-1.0, 1.0)
 
-    if self.hi < 0:
-        print 'Error: el intervalo es puramente negativo'
-        return None
-    elif self.lo < 0:
-        print 'Advertencia: El intervalo incluye números negativos. Se modificará para comenzar en cero.'
-        lo = 0
+        if num2>pi and num<pi:
+            return Intervalo(-1, max(math.cos(num), math.cos(num2)))
     
-    return Intervalo(lo,self.hi)
 
-def log(self):
-    
-    temp = recortar_intervalo(self)
+        num = math.cos(num)
+        num2 = math.cos(num2)
 
-    if temp is not None:
-        return Intervalo(np.log(temp.lo),np.log(temp.hi))
-    raise ArithmeticError
+        if num2 < num:
+            num, num2 = num2, num
+
+        return Intervalo(num, num2)
+
+                        
+    def sin(self):
+        return self.cos(self - math.pi/2)
         
-def exp(self):
-    return Intervalo(np.exp(self.lo),np.exp(self.hi))
-    
-def sqrt(self):
-
-    temp = recortar_intervalo(self)
-
-    if temp is not None:
-        return Intervalo(np.sqrt(temp.lo),np.sqrt(temp.hi))
-    raise ArithmeticError
         
-def arctan(self):
-    return Intervalo(np.arctan(self.lo),np.arctan(self.hi))
+       
+    def restringir_dominio(self, dominio=None):
+        """
+        Función que restringe el dominio de un intervalo a valores no negativos.
+        Levanta un error si el intervalo es completamente negativo.
+        """
 
-def tan(self):
+        if dominio is None:
+            dominio = Intervalo(0, math.inf)
+
+        restringido = self & dominio
+
+        if restringido is None:
+            print """Advertencia: el intervalo {} tiene interseccion vacia 
+            con el dominio {}.""".format(self, dominio)
+
+            raise ArithmeticError
+            return None
+
+        if restringido != self:
+            print """Advertencia: el intervalo {} tiene interseccion no-vacia 
+            con el dominio {}; restringiendo""".format(self, dominio)
+
+        return restringido
+
+
+    def log(self):
+        """
+        Calcula el logaritmo de un intervalo.
+        """
+        #try:
+        #   return Intervalo(math.log(self.lo), math.log(self.hi))
+
+        #except:
+
+        restringido = self.restringir_dominio()
+
+        return Intervalo(math.log(restringido.lo), math.log(restringido.hi))
+
+
+    def exp(self):
+        """
+        Calcula la exponencial de un intervalo.
+        """
     
-    if self.width() < 2*(np.pi) and np.tan(self.lo) <= np.tan(self.hi):
-        return Intervalo(np.tan(self.lo), np.tan(self.hi))
-    else:
-        print 'Advertencia: El intervalo contiene una singularidad'
-        return Intervalo(float("-inf"), float("inf"))
+        return Intervalo(math.exp(self.lo), math.exp(self.hi))
 
+
+
+        
+    def sqrt(self):
+
+        restringido = self.restringir_dominio()
+        return Intervalo(math.sqrt(restringido.lo),math.sqrt(restringido.hi))
+            
+    def arctan(self):
+        return Intervalo(math.arctan(self.lo),math.arctan(self.hi))
+
+    def tan(self):
+        
+        if self.width() < 2*(pi) and math.tan(self.lo) <= math.tan(self.hi):
+            return Intervalo(math.tan(self.lo), math.tan(self.hi))
+        else:
+            print 'Advertencia: El intervalo contiene una singularidad'
+            return Intervalo(float("-inf"), float("inf"))
+
+        #funciones elementales para intervalos
+      
+
+def cos(x):
+    try:
+        return x.cos()
+    except:
+        return math.cos(x)
