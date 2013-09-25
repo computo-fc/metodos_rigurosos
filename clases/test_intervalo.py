@@ -436,3 +436,26 @@ def test_cos():
                         num,num2=num2,num
         
                         assert b.lo==num and b.hi==num2
+
+def test_chop():
+    pi = np.pi
+    l = []
+    l = chop_epsilon(Intervalo(-2*pi,2*pi),np.cos,.25,l)
+    plot_with_f(l,np.cos,3)
+
+def test_chops():
+    pi = np.pi
+
+    def test_chop_parts(X,f,parts,zoom):
+        l = []
+        l = chop_parts(X,parts)
+        plot_with_f(l,f,zoom)
+        print l
+
+    def test_chop_epsilon(X,f,epsilon,zoom):
+        l = []
+        l = chop_epsilon(X,f,epsilon,l)
+        plot_with_f(l,f,zoom)
+        
+    test_chop_parts(Intervalo(-2*pi,2*pi),np.cos,8,3)
+    test_chop_epsilon(Intervalo(-2*pi,2*pi),np.cos,.25,3)

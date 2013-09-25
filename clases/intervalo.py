@@ -1,4 +1,4 @@
-# -*- coding: utf-8 -*- 
+﻿# -*- coding: utf-8 -*- 
 
 # from sympy import mpmath as mp
 # import numpy as np
@@ -187,9 +187,9 @@ class Intervalo(object):
 
     #division con denominadores que no contienen al cero    
     def __div__(self, otro):
-    	"""
+        """
         División
-    	"""
+        """
         if not isinstance(otro, Intervalo):
             otro = Intervalo(otro)
 
@@ -202,7 +202,7 @@ class Intervalo(object):
     #división reversa
     def __rdiv__(self, otro):
         """
-    	División revrsa para poder usar floats en el numerador
+        División revrsa para poder usar floats en el numerador
         """
         if not isinstance(otro, Intervalo):
             otro = Intervalo(otro)
@@ -253,17 +253,17 @@ class Intervalo(object):
 
     #Relación <= de intervalos.
     def __le__(self,otro):
-    	"""Relación <= de intervalos"""
-	
+        """Relación <= de intervalos"""
+    
         try: 
-            return (self.lo <= otro.lo) and self.hi <= otro.hi	
+            return (self.lo <= otro.lo) and self.hi <= otro.hi  
         except: 
             return self <= Intervalo(otro)
 
     #Relación >= de intervalos.
     def __ge__(self,otro):
-    	"""Relación >= de intervalos"""
-	
+        """Relación >= de intervalos"""
+    
         try:
             return (self.lo >= otro.lo) and self.hi >= otro.hi
         except: 
@@ -371,9 +371,7 @@ class Intervalo(object):
             print 'Advertencia: El intervalo contiene una singularidad'
             return Intervalo(float("-inf"), float("inf"))
 
-        #funciones elementales para intervalos
-      
-
+#funciones elementales para intervalos, para que funcionen cosas tipo funcion(a)
 def sqrt(x):
     try:
         return x.sqrt()
@@ -409,3 +407,80 @@ def tan(x):
         return x.tan()
     except:
         return math.tan(x)
+
+# ----    
+def chop(X):
+        middle_pos = X.middle()
+        right_part = Intervalo(X.lo, middle_pos)
+        left_part = Intervalo(middle_pos,X.hi)
+        return right_part, left_part
+    
+
+def chop_epsilon(X,f,epsilon,l=[]):
+    if f(X) is not None:
+        if f(X).width() < epsilon:
+            l.append(X)
+        else:
+            right_part, left_part = chop(X)
+            chop_epsilon(right_part,f,epsilon,l)
+            chop_epsilon(left_part,f,epsilon,l)
+    return l
+
+        
+def creater_bigest(list_of_X):
+    hi = list_of_X[0].hi
+    lo = list_of_X[0].lo
+    for x in list_of_X:
+        if x.lo <= lo:
+            lo = x.lo
+        if x.hi >= hi:
+            hi = x.hi
+    return Intervalo(lo,hi)
+
+def plot_with_f(list_of_X,f,zoom=1):
+    import matplotlib.pyplot as plt
+    from matplotlib.path import Path
+    import matplotlib.patches as patches
+    from numpy import arange
+
+    def get_verts(X,f):
+        try:
+            verts = [ (X.lo, f(X).lo),(X.lo, f(X).hi),(X.hi, f(X).hi),(X.hi, f(X).lo),(0., 0.),]
+            return verts
+        except AttributeError:
+            return  [ (0., 0.),(0., 0.),(0., 0.),(0., 0.),(0., 0.),]
+        
+    
+    codes = [Path.MOVETO, Path.LINETO, Path.LINETO, Path.LINETO, Path.CLOSEPOLY,]
+    fig = plt.figure()
+    ax = fig.add_subplot(111)
+    
+    for X in list_of_X:
+        path = Path(get_verts(X,f), codes)
+        patch = patches.PathPatch(path, facecolor='orange', lw=2)
+        ax.add_patch(patch)
+    
+    big_X = creater_bigest(list_of_X)
+    
+    x = arange(big_X.lo,big_X.hi,.01)
+    ax.plot(x,f(x))
+    
+    ax.set_xlim(big_X.lo,big_X.hi)
+    ax.set_ylim(f(big_X).lo*zoom,f(big_X).hi*zoom) 
+    plt.show()
+
+def chop_parts(X,parts):
+    l = []
+    if str(parts).isdigit():
+        from math import floor
+        from numpy import arange
+    
+        spacing = X.width()/parts
+        lo = X.lo
+        hi = X.lo + spacing
+        print spacing
+        for x in arange(0,parts,1):
+            l.append(Intervalo(lo,hi))
+            lo = lo + spacing
+            hi = hi + spacing
+        return l
