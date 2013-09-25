@@ -382,7 +382,22 @@ def test_exp():
 #	c=Intervalo(num, num2).log()
 #	assert a == c.lo and b == c.hi 
       
+def test_contains():
+    """
+    Para verificar la operación contains
+    """
     
+    num,  num2 = TwoReals()
+    num3, num4 = TwoReals()
+    
+    a = Intervalo(num, num2)
+    b = Intervalo(num3, num4)
+    
+    c = a in b
+    d = (num >= num3 and num2 <= num4)    
+    
+    assert c == d
+ 
 def graphic_cos(self):
     '''
     Comprobacion grafica para la funcion coseno, el input es un intervalo

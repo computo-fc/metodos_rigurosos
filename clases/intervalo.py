@@ -100,7 +100,7 @@ class Intervalo(object):
     def __rmul__(self, otro):
         return self * otro
 
-    # Esta es la funcion igualdad para intervalos
+    # Ésta es la funcion igualdad para intervalos
     def __eq__(self, otro):
         """
         función igualdad para intervalos 
@@ -118,7 +118,7 @@ class Intervalo(object):
                 return False
   
 
-    #interseccion
+    # Intersección
     def __and__(self, otro):
         """
         Intersección de intervalos
@@ -135,21 +135,21 @@ class Intervalo(object):
             b = min( self.hi, otro.hi )
             return Intervalo(a,b)
     
-    #interseccion por la izquierda
+    # Intersección por la izquierda
     def __rand__(self, otro):
         """
         Interseccion de intervalos (por la izquierda)
         """
         return self & otro
     
-    #negativo del intervalo
+    # Negativo del intervalo
     def __neg__(self):
         """
         Devuelve el valor negativo del intervalo
         """
         return Intervalo(-self.hi, -self.lo)
 
-    #Resta
+    # Resta
     def __sub__(self, otro):
         """
         Resta de Intervalos
@@ -159,26 +159,36 @@ class Intervalo(object):
         
         return Intervalo(self.lo - otro.hi, self.hi - otro.lo)                
         
-    #Resta reversa para poder hacer (float) - Intervalo
+    # Resta reversa para poder hacer (float) - Intervalo
     def __rsub__(self, otro):
         
         if not isinstance(otro, Intervalo):
             otro = Intervalo(otro)
             
         return Intervalo.__sub__(otro, self)
+    
+    # Función contains
+    def __contains__(self, otro):
+        """
+        Devuelve un true o false si 'otro' está dentro del intervalo.
+        En el caso de que otro sea un intervalo, se requiere que todos sus elementos
+        estén dentro para regresar true.
+        """
+        return otro & self == otro 
+        
             
-    #Funcion reciproco
+    # Funcion recíproco
     def reciprocal(self):
         """
         Devuelve un intervalo con los valores recíprocos
         """
-        if self.lo <= 0 <= self.hi:
+        if 0 in self:
             #si el intervalo contiene el cero debe de aparecer un error
             raise ZeroDivisionError
         else:
             return Intervalo(1.0/self.hi,1.0/self.lo)
 
-    #division con denominadores que no contienen al cero    
+    # division con denominadores que no contienen al cero    
     def __div__(self, otro):
         """
         División
@@ -186,13 +196,13 @@ class Intervalo(object):
         if not isinstance(otro, Intervalo):
             otro = Intervalo(otro)
 
-        if otro.lo <= 0 <= otro.hi:
+        if 0 in otro:
             raise ZeroDivisionError
 
         else:
             return self * otro.reciprocal()
     
-    #división reversa
+    # división reversa
     def __rdiv__(self, otro):
         """
         División revrsa para poder usar floats en el numerador
@@ -201,6 +211,63 @@ class Intervalo(object):
             otro = Intervalo(otro)
 
         return Intervalo.__div__(otro, self)
+
+    def __pow__(self, alpha):
+        """
+        Potencia con exponentes reales o enteros
+        alpha: exponente
+        """
+        
+        if alpha == int(alpha):
+            # caso donde el exponente es entero, en este caso los flotantes que pueden ser
+            # igualados a su forma entera entran en esta categoría (e.g. 2.0 == 2)
+            
+            return self.pow_int(alpha)
+            
+        elif isinstance(alpha, Intervalo):
+            # caso donde el exponente es de la clase intervalo
+            
+            print 'Error: El exponente no es de la clase apropiada'
+            return None
+            
+        else:
+            # cualquier otro caso el exponente se toma como real
+            return self.pow_real(alpha)
+
+
+    def pow_int(self, n):
+        """
+        Método para potencias enteras
+        """
+        # n: exponente
+        if n > 0:
+            if n % 2 != 0:
+                return Intervalo(self.lo**n, self.hi**n)
+            elif self.lo > 0:
+                return Intervalo(self.lo**n, self.hi**n)
+            elif self.hi < 0:
+                return Intervalo(self.hi**n, self.lo**n)
+            elif 0 in self:
+                print 'Advertencia: El intervalo contiene el cero'
+                return Intervalo(0, max(self.lo**n, self.hi**n))
+        elif n == 0:
+            return Intervalo(1)
+        else: # n < 0:
+            # para este caso es importante notar que la funcion reciprocal() no admite intervalos que contengan el cero,
+            # por lo que primero restringiremos el intervalo a reales positivos
+            restringido = self.restringir_dominio()
+            
+            return pow_int(restringido.reciprocal(), -n)
+            # Por si no queremos llamar a la recursión dejamos esto por aquí
+            # return Intervalo(self.reciprocal().lo**-n, self.reciprocal().hi**-n)
+
+    def pow_real(self, n):
+        """
+        Método para potencias con exponentes reales (que en este caso son flotantes)
+        f(x) = x^a = exp(a*log(x))
+        """
+        return exp(n*log(self))
+
 
     def middle(self):
         """
@@ -226,7 +293,7 @@ class Intervalo(object):
         return max([abs(self.lo),abs(self.hi)])
 
     
-    #Relación < de intervalos.
+    # Relación < de intervalos.
     def __lt__(self,otro):
         """Relación < de intervalos."""
         
@@ -235,7 +302,7 @@ class Intervalo(object):
         except:
             return self < Intervalo(otro)
 
-    #Relación > de intervalos.
+    # Relación > de intervalos.
     def __gt__(self,otro):
         """Relación > de intervalos."""
         
@@ -399,7 +466,20 @@ class Intervalo(object):
     def arctan(self):
         return Intervalo(math.arctan(self.lo),math.arctan(self.hi))
 
+#----------
 #funciones elementales para intervalos, para que funcionen cosas tipo funcion(a)
+def exp(x):
+    try:
+        return x.exp()
+    except:
+        return math.exp(x)
+
+def log(x):
+    try:
+        return x.log()
+    except:
+        return math.log(x)
+
 def sqrt(x):
     try:
         return x.sqrt()
@@ -423,12 +503,6 @@ def sin(x):
         return x.sin()
     except:
         return math.sin(x)
-
-def cos(x):
-    try:
-        return x.cos()
-    except:
-        return math.cos(x)
 
 def tan(x):
     try:
@@ -512,4 +586,5 @@ def chop_parts(X,parts):
             lo = lo + spacing
             hi = hi + spacing
         return l
+
 
