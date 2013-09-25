@@ -33,9 +33,6 @@ class Intervalo(object):
         # Esta función sirve con 'print'
         return "[{},{}]".format(self.lo,self.hi)
 
-    # def _repr_html_(self):
-    #     return "[{}, {}]".format(self.lo, self.hi)
-
     def _repr_html_(self):
         reprn = "[{}, {}]".format(self.lo, self.hi)
         reprn = reprn.replace("inf", r"&infin;")
@@ -62,16 +59,13 @@ class Intervalo(object):
     def __mul__(self, otro):
       
         return self._mul2(otro)
-      
-      
-      
+    
     def _mul1(self, otro):
         try:
             S=[self.lo*otro.lo , self.lo * otro.hi , self.hi * otro.lo , self.hi * otro.hi ]
             return Intervalo( min(S), max(S) )
         except:
             return self * Intervalo(otro)
-
             
     def _mul2(self, otro):
         """Multiplicacion de intervalos, evaluando todos los casos posibles """
@@ -102,7 +96,6 @@ class Intervalo(object):
                     
         except:
             return self * Intervalo(otro)
-
      
     def __rmul__(self, otro):
         return self * otro
@@ -274,39 +267,82 @@ class Intervalo(object):
 
     # Aquí se definirán funciones sobre intervalos
 
-    def cos(self):
-
+    ## NOTA: Implementación de David et al; me voy por la de AsTlan porque pasa
+    ## un test correcto que la de David et al no pasa.
+    #def cos(self):
+    #
+    #    pi = math.pi
+    #    if self.width() >= 2*pi:
+    #        return Intervalo(-1, 1)
+    #                    
+    #    num, num2 = math.mod(self.lo, 2*pi), math.mod(self.hi, 2*pi)
+    #
+    #    if num2 < num:
+    #        if num >= pi:
+    #            return Intervalo(min(math.cos(num), math.cos(num2)), 1.0)
+    #        
+    #        else: 
+    #            return Intervalo(-1.0, 1.0)
+    #
+    #    if num2>pi and num<pi:
+    #        return Intervalo(-1, max(math.cos(num), math.cos(num2)))
+    #
+    #
+    #    num = math.cos(num)
+    #    num2 = math.cos(num2)
+    #
+    #    if num2 < num:
+    #        num, num2 = num2, num
+    #
+    #    return Intervalo(num, num2)
+    
+    def cos(self):  
+        """
+        Coseno
+        """
         pi = math.pi
+        if self.width() >= (2 * pi):
+            return Intervalo(-1,1)
+        
+        else:
+            k = math.floor( (self.lo) / (2 * (pi)) )
+                    
+            if ( self.hi - k*2*pi <= pi ):
+                return Intervalo(math.cos(self.hi), math.cos(self.lo))
+                
+            elif ( self.lo - k*2*pi  <= pi <= self.hi - k*2*pi <= 2*pi ):
+                return Intervalo(-1, max(math.cos(self.lo), math.cos(self.hi)))
+                
+            elif ( self.lo - k*2* pi <= pi <= 2*pi <= self.hi - k*2*pi ):
+                return Intervalo(-1, 1)
+                
+            elif ( pi <=  self.lo - k*2*pi <= self.hi - k*2*pi <= 2*pi ):
+                return Intervalo(math.cos(self.lo), math.cos(self.hi))
+                
+            elif ( pi <= self.lo - k*2*pi <= 2*pi <=  self.hi - k*2*pi <= 3*pi ):
+                return Intervalo( min(math.cos(self.lo), math.cos(self.hi)), 1)
+                
+            elif ( pi <= self.lo - k*2*pi <= 2*pi <= 3*pi <= self.hi - k*2*pi ):
+                return Intervalo(-1, 1)
 
-        if self.width() >= 2*pi:
-            return Intervalo(-1, 1)
-                        
-        num, num2 = math.mod(self.lo, 2*pi), math.mod(self.hi, 2*pi)
-    
-        if num2 < num:
-            if num >= pi:
-                return Intervalo(min(math.cos(num), math.cos(num2)), 1.0)
-            
-            else: 
-                return Intervalo(-1.0, 1.0)
-
-        if num2>pi and num<pi:
-            return Intervalo(-1, max(math.cos(num), math.cos(num2)))
-    
-
-        num = math.cos(num)
-        num2 = math.cos(num2)
-
-        if num2 < num:
-            num, num2 = num2, num
-
-        return Intervalo(num, num2)
-
-                        
     def sin(self):
-        return self.cos(self - math.pi/2)
+        return self.cos(self - math.pi/2)        
         
+    def tan(self):
+        """
+        Función tangente para intervalos
+        """
+        #from scipy import inf
+        pi = math.pi        
+        if self.width() >= pi:
+            return Intervalo(float("-inf"), float("inf"))
         
+        if math.floor((self.lo + pi/2)/pi) == math.floor((self.hi + pi/2)/pi):
+            return Intervalo(math.tan(self.lo), math.tan(self.hi))
+        
+        else:
+            print "Warning: se tiene un intervalo degenerado"
+            return Intervalo(math.tan(self.lo), float("inf")), Intervalo(float("-inf"), math.tan(self.hi))     
        
     def restringir_dominio(self, dominio=None):
         """
@@ -362,14 +398,6 @@ class Intervalo(object):
             
     def arctan(self):
         return Intervalo(math.arctan(self.lo),math.arctan(self.hi))
-
-    def tan(self):
-        pi = math.pi
-        if self.width() < 2*pi and math.tan(self.lo) <= math.tan(self.hi):
-            return Intervalo(math.tan(self.lo), math.tan(self.hi))
-        else:
-            print 'Advertencia: El intervalo contiene una singularidad'
-            return Intervalo(float("-inf"), float("inf"))
 
 #funciones elementales para intervalos, para que funcionen cosas tipo funcion(a)
 def sqrt(x):
@@ -484,3 +512,4 @@ def chop_parts(X,parts):
             lo = lo + spacing
             hi = hi + spacing
         return l
+

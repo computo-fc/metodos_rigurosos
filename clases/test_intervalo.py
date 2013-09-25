@@ -297,7 +297,7 @@ def test_sqrt():
     num2 = np.random.uniform(0,10.0)
     a = Intervalo(num,num2)
     
-    result = sqrt(a)
+    result = np.sqrt(a)
 
     assert result.lo == np.sqrt(a.lo) and result.hi == np.sqrt(a.hi)
     
@@ -308,7 +308,7 @@ def test_arctan():
     num,num2 = TwoReals()
     a = Intervalo(num,num2)
 
-    result = arctan(a)
+    result = np.arctan(a)
 
     assert result.lo == np.arctan(a.lo) and result.hi == np.arctan(a.hi)
 
@@ -316,9 +316,9 @@ def test_tan():
     num,num2 = TwoReals()
     a = Intervalo(num,num2)
 
-    arcotan = arctan(a)
+    arcotan = np.arctan(a)
 
-    result = tan(arcotan)
+    result = np.tan(arcotan)
     print result - a
     assert (abs(result.lo - a.lo)) < 0.000000000001 and (abs(result.hi - a.hi)) < 0.000000000001
 
@@ -341,15 +341,23 @@ def test_tan():
 ##    return plt.show()
 
 def test_exp():
-    """
-    Se verifica que la operacion exponencial funcione.
-    """
-    num, num2 = TwoReals()
+    num,num2 = TwoReals()
+    a = Intervalo(num,num2)
 
-    a = mp.exp(num)
-    b = mp.exp(num2)
-    c = Intervalo(num, num2).exp()
-    assert a == c.lo and b == c.hi
+    result = np.exp(a)
+
+    assert result.lo == np.exp(a.lo) and result.hi == np.exp(a.hi)
+    assert np.log(result) == a
+
+
+# def test_log():
+#     num = np.random.uniform(0,10.0)
+#     num2 = np.random.uniform(0,10.0)
+#     a = Intervalo(num,num2)
+#    
+#     result = log(a)
+#
+#     assert result.lo == np.log(a.lo) and result.hi == np.log(a.hi)
 
 #### OJO: HAY PROBLEMAS DE INDENTACION
 #@raises(ValueError)
@@ -437,6 +445,40 @@ def test_cos():
         
                         assert b.lo==num and b.hi==num2
 
+def test_cosenoAsTLAN():
+    """
+    Prueba no aleatoria del Coseno
+    """
+    
+    pi = np.pi
+    
+    a = Intervalo(2 * pi)
+    b = Intervalo(2 * pi, 4 * pi)
+    c = Intervalo((1./2) * pi)
+    d = Intervalo(4 * pi, (17./4) * pi)
+    e = Intervalo((19) * pi, (39./2) * pi)
+    f = Intervalo((-3./2) * pi, - pi)
+    g = Intervalo((-5./2) * pi, (-3./2) * pi)
+    h = Intervalo((-1./2) * pi,(-1./4) * pi)
+    
+    cosa = a.cos()
+    cosb = b.cos()
+    cosc = c.cos()
+    cosd = d.cos()
+    cose = e.cos()
+    cosf = f.cos()
+    cosg = g.cos()
+    cosh = h.cos()
+    
+    assert cosa.lo == 1 and cosa.hi == 1 
+    assert cosb.lo == -1 and cosb.hi == 1 
+    assert cosc.lo == np.cos(pi * (1./2)) and cosc.hi == np.cos(pi * (1./2)) 
+    assert cosd.lo == np.cos((17./4) * pi) and cosd.hi == 1 
+    assert cose.lo == -1 and cose.hi == np.cos((39./2) * pi) 
+    assert cosf.lo == -1 and cosf.hi == np.cos((3./2) * pi)
+    assert cosg.lo == min(np.cos((1./2) * pi), np.cos((3./2) * np.pi)) and cosg.hi == 1 
+    assert cosh.lo == np.cos((-1./2) * pi) and cosh.hi == np.cos((-1./4) * pi)  
+
 def test_chop():
     pi = np.pi
     l = []
@@ -459,3 +501,4 @@ def test_chops():
         
     test_chop_parts(Intervalo(-2*pi,2*pi),np.cos,8,3)
     test_chop_epsilon(Intervalo(-2*pi,2*pi),np.cos,.25,3)
+
