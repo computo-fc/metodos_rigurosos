@@ -272,8 +272,8 @@ class Intervalo(object):
     def hull(self, otro):
         return Intervalo(min(self.lo,otro.lo),max(self.hi,otro.hi))
 
-        # Aquí se definirán funciones sobre intervalos        
-        
+    # Aquí se definirán funciones sobre intervalos
+
     def cos(self):
 
         pi = math.pi
@@ -354,8 +354,6 @@ class Intervalo(object):
     
         return Intervalo(math.exp(self.lo), math.exp(self.hi))
 
-
-
         
     def sqrt(self):
 
@@ -366,8 +364,8 @@ class Intervalo(object):
         return Intervalo(math.arctan(self.lo),math.arctan(self.hi))
 
     def tan(self):
-        
-        if self.width() < 2*(pi) and math.tan(self.lo) <= math.tan(self.hi):
+        pi = math.pi
+        if self.width() < 2*pi and math.tan(self.lo) <= math.tan(self.hi):
             return Intervalo(math.tan(self.lo), math.tan(self.hi))
         else:
             print 'Advertencia: El intervalo contiene una singularidad'
@@ -376,8 +374,38 @@ class Intervalo(object):
         #funciones elementales para intervalos
       
 
+def sqrt(x):
+    try:
+        return x.sqrt()
+    except:
+        return math.sqrt(x)
+
+def arctan(x):
+    try:
+        return x.arctan()
+    except:
+        return math.arctan(x)
+
 def cos(x):
     try:
         return x.cos()
     except:
         return math.cos(x)
+
+def sin(x):
+    try:
+        return x.sin()
+    except:
+        return math.sin(x)
+
+def cos(x):
+    try:
+        return x.cos()
+    except:
+        return math.cos(x)
+
+def tan(x):
+    try:
+        return x.tan()
+    except:
+        return math.tan(x)

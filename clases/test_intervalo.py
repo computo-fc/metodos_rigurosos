@@ -1,19 +1,22 @@
 # -*- coding: utf-8 -*- 
 
 # Escribimos funciones con el nombre test_ALGO
-from sympy import mpmath as mp
 from intervalo import *
+
+from sympy import mpmath as mp
 
 import matplotlib.pyplot as plt
 
 import numpy as np
 
-def TwoReals():
+from nose.tools import *
+
+def TwoReals(u=-10.0,v=10.0):
     """
     Funcion auxiliar para el test de intervalos con intervalos aleatorios
     """
-    num=np.random.uniform(-10.0,10.0)
-    num2=np.random.uniform(-10.0,10.0)
+    num=np.random.uniform(u,v)
+    num2=np.random.uniform(u,v)
     
     #El if siguiente se hace asumiendo que al definir el objeto intervalo incorrectamente
     #este no volteara los valores.
@@ -337,53 +340,42 @@ def test_tan():
 ##    #plt.ylim(y-0.5,y+0.5)
 ##    return plt.show()
 
-
 def test_exp():
-    num,num2 = TwoReals()
-    a = Intervalo(num,num2)
-
-    result = exp(a)
-
-    assert result.lo == np.exp(a.lo) and result.hi == np.exp(a.hi)
-    assert log(result) == a
-
-
-# def test_log():
-#     num = np.random.uniform(0,10.0)
-#     num2 = np.random.uniform(0,10.0)
-#     a = Intervalo(num,num2)
-    
-#     result = log(a)
-
-#     assert result.lo == np.log(a.lo) and result.hi == np.log(a.hi)
-
-
-def test_log():
     """
-    Se verifica que la operacion logaritmo funcione.
+    Se verifica que la operacion exponencial funcione.
     """
-
     num, num2 = TwoReals()
-    
 
-    try:
-      a = mp.log(num)
-      b = mp.log(num2)
-      c=Intervalo(num, num2).log()
-      assert a == c.lo and b == c.hi 
-    except: 
-      if num2 < 0:
-	pass
-	#Debemos checar que se de el ValueError
-      elif num < 0 and num2 >= 0:
-	a = mp.log(num + np.abs(num))
-	b = mp.log(num2)
-	c=Intervalo(num, num2).log()
-	assert a == c.lo and b == c.hi 
+    a = mp.exp(num)
+    b = mp.exp(num2)
+    c = Intervalo(num, num2).exp()
+    assert a == c.lo and b == c.hi
+
+#### OJO: HAY PROBLEMAS DE INDENTACION
+#@raises(ValueError)
+#def test_log():
+#    """
+#    Se verifica que la operacion logaritmo funcione.
+#    """
+#
+#    num, num2 = TwoReals()
+#
+#    try:
+#        a = mp.log(num)
+#        b = mp.log(num2)
+#        c=Intervalo(num, num2).log()
+#        assert a == c.lo and b == c.hi 
+#    except: 
+#        if num2 < 0:
+#            raise ValueError("OK, si da este error")
+#        elif num < 0 and num2 >= 0:
+#	a = mp.log(num + np.abs(num))
+#	b = mp.log(num2)
+#	c=Intervalo(num, num2).log()
+#	assert a == c.lo and b == c.hi 
       
     
 def graphic_cos(self):
-
     '''
     Comprobacion grafica para la funcion coseno, el input es un intervalo
     y se mapea el mismo en el eje de las 'x' y al mismo tiempo se muestra el intervalo
@@ -404,7 +396,6 @@ def graphic_cos(self):
     plt.show()
     
 def test_cos():
-    
     '''
     Se realiza el test de coseno con 100 intervalos aleatorios
     '''
@@ -445,4 +436,3 @@ def test_cos():
                         num,num2=num2,num
         
                         assert b.lo==num and b.hi==num2
-
