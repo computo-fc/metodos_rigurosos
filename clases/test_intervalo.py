@@ -1,8 +1,10 @@
 # -*- coding: utf-8 -*- 
 
 # Escribimos funciones con el nombre test_ALGO
-
+from sympy import mpmath as mp
 from intervalo import *
+
+import matplotlib.pyplot as plt
 
 import numpy as np
 
@@ -201,7 +203,7 @@ def test_width():
     a=Intervalo(num,num2)
     c=a.width()
     
-    assert c==(a.hi-a.lo)  
+    assert c==abs(a.hi-a.lo)  
     
 def test_Abs():
     """
@@ -287,6 +289,36 @@ def test_hull():
     ##plot_intevalo(b)
     assert (a.lo==min(min(num),min(num2))) & (a.hi==max(max(num),max(num2)))
 
+def test_sqrt():
+    num = np.random.uniform(0,10.0)
+    num2 = np.random.uniform(0,10.0)
+    a = Intervalo(num,num2)
+    
+    result = np.sqrt(a)
+
+    assert result.lo == np.sqrt(a.lo) and result.hi == np.sqrt(a.hi)
+    
+    cuadrado = result*result
+    assert (abs(cuadrado.lo - a.lo)) < 0.000000000001 and (abs(cuadrado.hi - a.hi)) < 0.000000000001
+
+def test_arctan():
+    num,num2 = TwoReals()
+    a = Intervalo(num,num2)
+
+    result = np.arctan(a)
+
+    assert result.lo == np.arctan(a.lo) and result.hi == np.arctan(a.hi)
+
+def test_tan():
+    num,num2 = TwoReals()
+    a = Intervalo(num,num2)
+
+    arcotan = np.arctan(a)
+
+    result = np.tan(arcotan)
+    print result - a
+    assert (abs(result.lo - a.lo)) < 0.000000000001 and (abs(result.hi - a.hi)) < 0.000000000001
+
 ##def plot_intevalo(a,y=0):
 ##    from matplotlib import pyplot as plt
 ##    mins=[]
@@ -305,7 +337,7 @@ def test_hull():
 ##    #plt.ylim(y-0.5,y+0.5)
 ##    return plt.show()
 
-def test_coseno():
+def test_cosenoAsTLAN():
     """
     Prueba no aleatoria del Coseno
     """
@@ -338,3 +370,112 @@ def test_coseno():
     assert cosf.lo == -1 and cosf.hi == np.cos((3./2) * pi)
     assert cosg.lo == min(np.cos((1./2) * pi), np.cos((3./2) * np.pi)) and cosg.hi == 1 
     assert cosh.lo == np.cos((-1./2) * pi) and cosh.hi == np.cos((-1./4) * pi) 	
+
+
+def test_exp():
+    num,num2 = TwoReals()
+    a = Intervalo(num,num2)
+
+    result = np.exp(a)
+
+    assert result.lo == np.exp(a.lo) and result.hi == np.exp(a.hi)
+    assert np.log(result) == a
+
+
+# def test_log():
+#     num = np.random.uniform(0,10.0)
+#     num2 = np.random.uniform(0,10.0)
+#     a = Intervalo(num,num2)
+    
+#     result = log(a)
+
+#     assert result.lo == np.log(a.lo) and result.hi == np.log(a.hi)
+
+
+def test_log():
+    """
+    Se verifica que la operacion logaritmo funcione.
+    """
+
+    num, num2 = TwoReals()
+    
+
+    try:
+      a = mp.log(num)
+      b = mp.log(num2)
+      c=Intervalo(num, num2).log()
+      assert a == c.lo and b == c.hi 
+    except: 
+      if num2 < 0:
+	pass
+	#Debemos checar que se de el ValueError
+      elif num < 0 and num2 >= 0:
+	a = mp.log(num + np.abs(num))
+	b = mp.log(num2)
+	c=Intervalo(num, num2).log()
+	assert a == c.lo and b == c.hi 
+      
+    
+def graphic_cos(self):
+
+    '''
+    Comprobacion grafica para la funcion coseno, el input es un intervalo
+    y se mapea el mismo en el eje de las 'x' y al mismo tiempo se muestra el intervalo
+    resultado de aplicar el coseno en el eje de las 'y'
+    '''
+    
+    x=np.linspace(self.lo-3,self.hi+3,10000)
+    y=np.cos(x)
+    plt.figure()
+    co=Intervalo.cos(self)
+    xx=[self.lo,self.hi]
+    yy=[0,0]
+    xX=[self.middle(),self.middle()]
+    yY=[co.lo,co.hi]
+    plt.plot(xx,yy)
+    plt.plot(xX,yY)
+    plt.plot(x,y)
+    plt.show()
+    
+def test_cos():
+    
+    '''
+    Se realiza el test de coseno con 100 intervalos aleatorios
+    '''
+    
+    for i in range(1,100):
+    
+        num,num2=TwoReals()
+    
+        a=Intervalo(num,num2)
+    
+        b=Intervalo.cos(a)
+        
+        if a.width()>=2*np.pi:
+            assert b.lo==-1.0 and b.hi==1.0
+    
+
+            
+        else:
+            
+            num,num2=np.mod(num,2*np.pi), np.mod(num2,2*np.pi)
+        
+            if (num2<num)and(num>np.pi):
+                assert b.lo==min(np.cos(num),np.cos(num2)) and  b.hi==1.0
+            
+            else:
+                
+                if (num2<num)and(num<=np.pi):
+                    assert b.lo==-1.0 and b.hi==1.0
+        
+                if num2>np.pi and num<np.pi:
+                    assert b.lo==-1 and b.hi==max(np.cos(num),np.cos(num2))
+            
+                else:
+                    num=np.cos(num)
+                    num2=np.cos(num2)
+        
+                    if num2<num:
+                        num,num2=num2,num
+        
+                        assert b.lo==num and b.hi==num2
