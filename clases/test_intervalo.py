@@ -1,19 +1,22 @@
 # -*- coding: utf-8 -*- 
 
 # Escribimos funciones con el nombre test_ALGO
-from sympy import mpmath as mp
 from intervalo import *
+
+from sympy import mpmath as mp
 
 import matplotlib.pyplot as plt
 
 import numpy as np
 
-def TwoReals():
+from nose.tools import *
+
+def TwoReals(u=-10.0,v=10.0):
     """
     Funcion auxiliar para el test de intervalos con intervalos aleatorios
     """
-    num=np.random.uniform(-10.0,10.0)
-    num2=np.random.uniform(-10.0,10.0)
+    num=np.random.uniform(u,v)
+    num2=np.random.uniform(u,v)
     
     #El if siguiente se hace asumiendo que al definir el objeto intervalo incorrectamente
     #este no volteara los valores.
@@ -294,7 +297,7 @@ def test_sqrt():
     num2 = np.random.uniform(0,10.0)
     a = Intervalo(num,num2)
     
-    result = sqrt(a)
+    result = np.sqrt(a)
 
     assert result.lo == np.sqrt(a.lo) and result.hi == np.sqrt(a.hi)
     
@@ -305,7 +308,7 @@ def test_arctan():
     num,num2 = TwoReals()
     a = Intervalo(num,num2)
 
-    result = arctan(a)
+    result = np.arctan(a)
 
     assert result.lo == np.arctan(a.lo) and result.hi == np.arctan(a.hi)
 
@@ -313,9 +316,9 @@ def test_tan():
     num,num2 = TwoReals()
     a = Intervalo(num,num2)
 
-    arcotan = arctan(a)
+    arcotan = np.arctan(a)
 
-    result = tan(arcotan)
+    result = np.tan(arcotan)
     print result - a
     assert (abs(result.lo - a.lo)) < 0.000000000001 and (abs(result.hi - a.hi)) < 0.000000000001
 
@@ -337,53 +340,65 @@ def test_tan():
 ##    #plt.ylim(y-0.5,y+0.5)
 ##    return plt.show()
 
-
 def test_exp():
     num,num2 = TwoReals()
     a = Intervalo(num,num2)
 
-    result = exp(a)
+    result = np.exp(a)
 
     assert result.lo == np.exp(a.lo) and result.hi == np.exp(a.hi)
-    assert log(result) == a
+    assert np.log(result) == a
 
 
 # def test_log():
 #     num = np.random.uniform(0,10.0)
 #     num2 = np.random.uniform(0,10.0)
 #     a = Intervalo(num,num2)
-    
+#    
 #     result = log(a)
-
+#
 #     assert result.lo == np.log(a.lo) and result.hi == np.log(a.hi)
 
-
-def test_log():
-    """
-    Se verifica que la operacion logaritmo funcione.
-    """
-
-    num, num2 = TwoReals()
-    
-
-    try:
-      a = mp.log(num)
-      b = mp.log(num2)
-      c=Intervalo(num, num2).log()
-      assert a == c.lo and b == c.hi 
-    except: 
-      if num2 < 0:
-	pass
-	#Debemos checar que se de el ValueError
-      elif num < 0 and num2 >= 0:
-	a = mp.log(num + np.abs(num))
-	b = mp.log(num2)
-	c=Intervalo(num, num2).log()
-	assert a == c.lo and b == c.hi 
+#### OJO: HAY PROBLEMAS DE INDENTACION
+#@raises(ValueError)
+#def test_log():
+#    """
+#    Se verifica que la operacion logaritmo funcione.
+#    """
+#
+#    num, num2 = TwoReals()
+#
+#    try:
+#        a = mp.log(num)
+#        b = mp.log(num2)
+#        c=Intervalo(num, num2).log()
+#        assert a == c.lo and b == c.hi 
+#    except: 
+#        if num2 < 0:
+#            raise ValueError("OK, si da este error")
+#        elif num < 0 and num2 >= 0:
+#	a = mp.log(num + np.abs(num))
+#	b = mp.log(num2)
+#	c=Intervalo(num, num2).log()
+#	assert a == c.lo and b == c.hi 
       
+def test_contains():
+    """
+    Para verificar la operación contains
+    """
     
+    num,  num2 = TwoReals()
+    num3, num4 = TwoReals()
+    
+    a = Intervalo(num, num2)
+    b = Intervalo(num3, num4)
+    
+    c = a in b
+    d = (num >= num3 and num2 <= num4)    
+    
+    assert c == d
+ 
 def graphic_cos(self):
-
     '''
     Comprobacion grafica para la funcion coseno, el input es un intervalo
     y se mapea el mismo en el eje de las 'x' y al mismo tiempo se muestra el intervalo
@@ -404,7 +419,6 @@ def graphic_cos(self):
     plt.show()
     
 def test_cos():
-    
     '''
     Se realiza el test de coseno con 100 intervalos aleatorios
     '''
@@ -445,4 +459,61 @@ def test_cos():
                         num,num2=num2,num
         
                         assert b.lo==num and b.hi==num2
+
+def test_cosenoAsTLAN():
+    """
+    Prueba no aleatoria del Coseno
+    """
+    
+    pi = np.pi
+    
+    a = Intervalo(2 * pi)
+    b = Intervalo(2 * pi, 4 * pi)
+    c = Intervalo((1./2) * pi)
+    d = Intervalo(4 * pi, (17./4) * pi)
+    e = Intervalo((19) * pi, (39./2) * pi)
+    f = Intervalo((-3./2) * pi, - pi)
+    g = Intervalo((-5./2) * pi, (-3./2) * pi)
+    h = Intervalo((-1./2) * pi,(-1./4) * pi)
+    
+    cosa = a.cos()
+    cosb = b.cos()
+    cosc = c.cos()
+    cosd = d.cos()
+    cose = e.cos()
+    cosf = f.cos()
+    cosg = g.cos()
+    cosh = h.cos()
+    
+    assert cosa.lo == 1 and cosa.hi == 1 
+    assert cosb.lo == -1 and cosb.hi == 1 
+    assert cosc.lo == np.cos(pi * (1./2)) and cosc.hi == np.cos(pi * (1./2)) 
+    assert cosd.lo == np.cos((17./4) * pi) and cosd.hi == 1 
+    assert cose.lo == -1 and cose.hi == np.cos((39./2) * pi) 
+    assert cosf.lo == -1 and cosf.hi == np.cos((3./2) * pi)
+    assert cosg.lo == min(np.cos((1./2) * pi), np.cos((3./2) * np.pi)) and cosg.hi == 1 
+    assert cosh.lo == np.cos((-1./2) * pi) and cosh.hi == np.cos((-1./4) * pi)  
+
+def test_chop():
+    pi = np.pi
+    l = []
+    l = chop_epsilon(Intervalo(-2*pi,2*pi),np.cos,.25,l)
+    plot_with_f(l,np.cos,3)
+
+def test_chops():
+    pi = np.pi
+
+    def test_chop_parts(X,f,parts,zoom):
+        l = []
+        l = chop_parts(X,parts)
+        plot_with_f(l,f,zoom)
+        print l
+
+    def test_chop_epsilon(X,f,epsilon,zoom):
+        l = []
+        l = chop_epsilon(X,f,epsilon,l)
+        plot_with_f(l,f,zoom)
+        
+    test_chop_parts(Intervalo(-2*pi,2*pi),np.cos,8,3)
+    test_chop_epsilon(Intervalo(-2*pi,2*pi),np.cos,.25,3)
 
