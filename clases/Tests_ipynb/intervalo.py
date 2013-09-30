@@ -465,6 +465,21 @@ class Intervalo(object):
             
     def arctan(self):
         return Intervalo(math.arctan(self.lo),math.arctan(self.hi))
+        
+def heaviside(self):
+    '''
+    Funcion Heaviside para intervalos
+    '''
+    
+    if self.lo<0 and self.hi<0:
+        return Intervalo(0)
+        
+    if self.lo<0 and self.hi>=0:
+        
+        return Intervalo(0,1)
+        
+    return Intervalo(1)
+        
 
 #----------
 #funciones elementales para intervalos, para que funcionen cosas tipo funcion(a)
@@ -586,5 +601,19 @@ def chop_parts(X,parts):
             lo = lo + spacing
             hi = hi + spacing
         return l
+        
+        
+    
+def SymmetricInterval(a,b):
+    
+    '''
+    Construye un intervalo simetrico donde la primera entrada es el
+    centro del intervalo y la segunda el radio.
+    '''
+    
+    hi=a+b
+    lo=a-b
+    
+    return Intervalo(lo,hi)
 
 
