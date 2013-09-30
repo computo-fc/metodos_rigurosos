@@ -11,7 +11,6 @@ class DifAuto(object):
         return "DifAuto [{},{}]".format(self.valor,self.deriv)
     
     def __str__(self):
-        # Esta función sirve con 'print'
         return "[{},{}]".format(self.valor,self.deriv)
 
     def _repr_html_(self):
@@ -25,5 +24,9 @@ class DifAuto(object):
 
     
     def __pow__(self,n):
+        
+        '''
+        Operacion potencia para jets.
+        '''
        
         return DifAuto (self.valor**n,n*self.valor**(n-1))
