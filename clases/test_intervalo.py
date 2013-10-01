@@ -340,6 +340,25 @@ def test_tan():
 ##    #plt.ylim(y-0.5,y+0.5)
 ##    return plt.show()
 
+def test_restringir_dominio():
+    """
+    Verificamos que la función para restringir el dominio funcione.
+    """    
+    num, num2 = TwoReals(-20,-1)
+    a = Intervalo(num, num2)
+    try:    
+        assert a.restringir_dominio() is None
+            
+    except ArithmeticError:
+        assert a.hi < Intervalo(0, math.inf)
+        
+    num, num2 = TwoReals()
+    a = Intervalo(num, num2)
+    dominio2 = Intervalo(-10, 10)
+        
+    assert a.restringir_dominio(dominio=dominio2) == a
+
+
 def test_exp():
     num,num2 = TwoReals()
     a = Intervalo(num,num2)
@@ -516,4 +535,3 @@ def test_chops():
         
     test_chop_parts(Intervalo(-2*pi,2*pi),np.cos,8,3)
     test_chop_epsilon(Intervalo(-2*pi,2*pi),np.cos,.25,3)
-

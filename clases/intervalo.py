@@ -411,6 +411,7 @@ class Intervalo(object):
             print "Warning: se tiene un intervalo degenerado"
             return Intervalo(math.tan(self.lo), float("inf")), Intervalo(float("-inf"), math.tan(self.hi))     
        
+       
     def restringir_dominio(self, dominio=None):
         """
         Función que restringe el dominio de un intervalo a valores no negativos.
@@ -423,16 +424,20 @@ class Intervalo(object):
         restringido = self & dominio
 
         if restringido is None:
-            print """Advertencia: el intervalo {} tiene interseccion vacia 
-            con el dominio {}.""".format(self, dominio)
-
-            raise ArithmeticError
-            return None
+            
+            raise ArithmeticError("""Advertencia: el intervalo {} tiene 
+            interseccion vacia con el dominio {}.""".format(self, dominio))
+            
 
         if restringido != self:
-            print """Advertencia: el intervalo {} tiene interseccion no-vacia 
-            con el dominio {}; restringiendo""".format(self, dominio)
-
+            if dominio.__contains__(self):
+                pass
+            else:
+                print """Advertencia: el intervalo {} tiene interseccion no-vacia 
+                con el dominio {}. Se considera la restriccion al intervalo 
+                dado por (interseccion con el dominio) 
+                {}""".format(self, dominio, restringido)
+        
         return restringido
 
 
