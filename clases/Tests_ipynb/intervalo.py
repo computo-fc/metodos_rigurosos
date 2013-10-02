@@ -393,7 +393,7 @@ class Intervalo(object):
                 return Intervalo(-1, 1)
 
     def sin(self):
-        return self.cos(self - math.pi/2)        
+        return (self - math.pi/2).cos()
         
     def tan(self):
         """
@@ -411,6 +411,7 @@ class Intervalo(object):
             print "Warning: se tiene un intervalo degenerado"
             return Intervalo(math.tan(self.lo), float("inf")), Intervalo(float("-inf"), math.tan(self.hi))     
        
+       
     def restringir_dominio(self, dominio=None):
         """
         Función que restringe el dominio de un intervalo a valores no negativos.
@@ -423,16 +424,20 @@ class Intervalo(object):
         restringido = self & dominio
 
         if restringido is None:
-            print """Advertencia: el intervalo {} tiene interseccion vacia 
-            con el dominio {}.""".format(self, dominio)
-
-            raise ArithmeticError
-            return None
+            
+            raise ArithmeticError("""Advertencia: el intervalo {} tiene 
+            interseccion vacia con el dominio {}.""".format(self, dominio))
+            
 
         if restringido != self:
-            print """Advertencia: el intervalo {} tiene interseccion no-vacia 
-            con el dominio {}; restringiendo""".format(self, dominio)
-
+            if dominio.__contains__(self):
+                pass
+            else:
+                print """Advertencia: el intervalo {} tiene interseccion no-vacia 
+                con el dominio {}. Se considera la restriccion al intervalo 
+                dado por (interseccion con el dominio) 
+                {}""".format(self, dominio, restringido)
+        
         return restringido
 
 
@@ -465,7 +470,7 @@ class Intervalo(object):
             
     def arctan(self):
         return Intervalo(math.arctan(self.lo),math.arctan(self.hi))
-
+        
 #----------
 #funciones elementales para intervalos, para que funcionen cosas tipo funcion(a)
 def exp(x):
@@ -586,5 +591,34 @@ def chop_parts(X,parts):
             lo = lo + spacing
             hi = hi + spacing
         return l
+        
+        
+def heaviside(self):
+    '''
+    Funcion Heaviside para intervalos
+    '''
+    
+    if self.lo<0 and self.hi<0:
+        return Intervalo(0)
+        
+    if self.lo<0 and self.hi>=0:
+        
+        return Intervalo(0,1)
+        
+    return Intervalo(1)
+        
+
+    
+def SymmetricInterval(a,b):
+    
+    '''
+    Construye un intervalo simetrico donde la primera entrada es el
+    centro del intervalo y la segunda el radio.
+    '''
+    
+    hi=a+b
+    lo=a-b
+    
+    return Intervalo(lo,hi)
 
 
