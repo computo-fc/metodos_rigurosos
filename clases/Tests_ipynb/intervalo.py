@@ -393,7 +393,7 @@ class Intervalo(object):
                 return Intervalo(-1, 1)
 
     def sin(self):
-        return self.cos(self - math.pi/2)        
+        return (self - math.pi/2).cos()
         
     def tan(self):
         """
