@@ -1,0 +1,12 @@
+2013.09.26:
+
+En este directorio hay notebooks de ipython que sirven para
+probar y ejemplificar que lo que está en `intervalo.py` es
+consistente. Si se les ocurren nuevas pruebas, o adiciones,
+inclúyanlas aquí.
+
+La única cosa que hay que recordar es que el archivo 
+`intervalo.py` que hay aquí **debe** ser una copia íntegra
+del que está en el directorio justo arriba, para que las
+pruebas se mantengan actuales.
+

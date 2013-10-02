@@ -1,4 +1,4 @@
-# -*- coding: utf-8 -*- 
+ï»¿# -*- coding: utf-8 -*- 
 
 # from sympy import mpmath as mp
 # import numpy as np
@@ -226,7 +226,9 @@ class Intervalo(object):
             
         elif isinstance(alpha, Intervalo):
             # caso donde el exponente es de la clase intervalo
-            return self.pow_expint(alpha)
+            
+            print 'Error: El exponente no es de la clase apropiada'
+            return None
             
         else:
             # cualquier otro caso el exponente se toma como real
@@ -265,56 +267,6 @@ class Intervalo(object):
         f(x) = x^a = exp(a*log(x))
         """
         return exp(n*log(self))
-      
-    #def pow_expint(self, otro):
-    #    """
-    #    Función exponienciación de Intervalos con exponente Intervalo
-    #    """       
-    #        
-    #    res = self.restringir_dominio()
-    #    
-    #    S = math.exp(otro.hi * math.log(res.lo)), math.exp(otro.lo * math.log(res.hi)) , math.exp(otro.lo * math.log(res.lo)), math.exp(otro.hi * np.log(res.hi))
-    #
-    #    returnreturn Intervalo(min(S), max(S))
-    
-    def pow_expint(self, otro):
-        """
-        Función exponienciación de Intervalos con exponente Intervalo
-        """       
-            
-        res = self.restringir_dominio()
-        
-        if otro.hi <= 0:
-            if res.hi <= 1:
-                return Intervalo(math.exp(otro.hi * math.log(res.hi)), math.exp(otro.lo * math.log(res.lo)))
-            
-            if res.lo <= 1 <= res.hi:
-                return Intervalo(math.exp(otro.lo * math.log(res.hi)), math.exp(otro.lo * math.log(res.lo)))
-            
-            if 1 <= res.lo:
-                return Intervalo(math.exp(otro.lo * math.log(res.hi)), math.exp(otro.hi * math.log(res.lo)))
-        
-        if otro.lo <= 0 <= otro.hi:
-            
-            if res.hi <= 1:
-                return Intervalo(math.exp(otro.hi * math.log(res.lo)), math.exp(otro.lo * math.log(res.lo)))
-            
-            if res.lo <= 1 <= res.hi:
-                return Intervalo(min( math.exp(otro.hi * math.log(res.lo)), math.exp(otro.lo * math.log(res.hi)) ), max( math.exp(otro.hi * np.log(res.hi)), math.exp(otro.lo * math.log(res.lo)) ))
-            
-            if 1 <= res.lo:
-                return Intervalo(math.exp(otro.lo * np.log(res.hi)), math.exp(otro.hi * math.log(res.hi)))
-            
-        if 0 <= otro.lo:
-            
-            if res.hi <= 1:
-                return Intervalo(math.exp(otro.hi * math.log(res.lo)), math.exp(otro.lo * math.log(res.hi)))
-            
-            if res.lo <= 1 <= res.hi:
-                return Intervalo(math.exp(otro.hi * math.log(res.lo)), math.exp(otro.hi * math.log(res.hi)))
-            
-            if 1 <= res.lo:
-                return Intervalo(math.exp(otro.lo * math.log(res.lo)), math.exp(otro.hi * math.log(res.hi)))
 
 
     def middle(self):
