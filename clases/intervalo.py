@@ -321,13 +321,13 @@ class Intervalo(object):
         """
         Calcula el punto medio del intervalo
         """
-        return (self.lo+self.hi)/2
+        return (self.lo+self.hi)/2.
         
     def radio(self):
         """
         Calcula el radio del intervalo
         """
-        return (self.hi-self.lo)/2
+        return (self.hi-self.lo)/2.
         
     def width(self):
         """
