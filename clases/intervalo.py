@@ -218,7 +218,7 @@ class Intervalo(object):
         alpha: exponente
         """
         
-        if alpha == int(alpha):
+        if isinstance(alpha, int):
             # caso donde el exponente es entero, en este caso los flotantes que pueden ser
             # igualados a su forma entera entran en esta categoría (e.g. 2.0 == 2)
             
@@ -300,7 +300,7 @@ class Intervalo(object):
                 return Intervalo(math.exp(otro.hi * math.log(res.lo)), math.exp(otro.lo * math.log(res.lo)))
             
             if res.lo <= 1 <= res.hi:
-                return Intervalo(min( math.exp(otro.hi * math.log(res.lo)), math.exp(otro.lo * math.log(res.hi)) ), max( math.exp(otro.hi * np.log(res.hi)), math.exp(otro.lo * math.log(res.lo)) ))
+                return Intervalo(min( math.exp(otro.hi * math.log(res.lo)), math.exp(otro.lo * math.log(res.hi)) ), max( math.exp(otro.hi * math.log(res.hi)), math.exp(otro.lo * math.log(res.lo)) ))
             
             if 1 <= res.lo:
                 return Intervalo(math.exp(otro.lo * np.log(res.hi)), math.exp(otro.hi * math.log(res.hi)))
