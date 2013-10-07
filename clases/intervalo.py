@@ -218,7 +218,7 @@ class Intervalo(object):
         alpha: exponente
         """
         
-        if alpha == int(alpha):
+        if isinstance(alpha, int):
             # caso donde el exponente es entero, en este caso los flotantes que pueden ser
             # igualados a su forma entera entran en esta categoría (e.g. 2.0 == 2)
             
@@ -273,7 +273,7 @@ class Intervalo(object):
     #        
     #    res = self.restringir_dominio()
     #    
-    #    S = math.exp(otro.hi * math.log(res.lo)), math.exp(otro.lo * math.log(res.hi)) , math.exp(otro.lo * math.log(res.lo)), math.exp(otro.hi * np.log(res.hi))
+    #    S = math.exp(otro.hi * math.log(res.lo)), math.exp(otro.lo * math.log(res.hi)) , math.exp(otro.lo * math.log(res.lo)), math.exp(otro.hi * math.log(res.hi))
     #
     #    returnreturn Intervalo(min(S), max(S))
     
@@ -321,13 +321,13 @@ class Intervalo(object):
         """
         Calcula el punto medio del intervalo
         """
-        return (self.lo+self.hi)/2
+        return (self.lo+self.hi)/2.
         
     def radio(self):
         """
         Calcula el radio del intervalo
         """
-        return (self.hi-self.lo)/2
+        return (self.hi-self.lo)/2.
         
     def width(self):
         """
