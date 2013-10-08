@@ -1,4 +1,4 @@
-ï»¿# -*- coding: utf-8 -*- 
+# -*- coding: utf-8 -*- 
 
 # from sympy import mpmath as mp
 # import numpy as np
@@ -218,7 +218,7 @@ class Intervalo(object):
         alpha: exponente
         """
         
-        if alpha == int(alpha):
+        if isinstance(alpha, int):
             # caso donde el exponente es entero, en este caso los flotantes que pueden ser
             # igualados a su forma entera entran en esta categorÃ­a (e.g. 2.0 == 2)
             
@@ -226,9 +226,7 @@ class Intervalo(object):
             
         elif isinstance(alpha, Intervalo):
             # caso donde el exponente es de la clase intervalo
-            
-            print 'Error: El exponente no es de la clase apropiada'
-            return None
+            return self.pow_expint(alpha)
             
         else:
             # cualquier otro caso el exponente se toma como real
@@ -267,19 +265,69 @@ class Intervalo(object):
         f(x) = x^a = exp(a*log(x))
         """
         return exp(n*log(self))
+      
+    #def pow_expint(self, otro):
+    #    """
+    #    Función exponienciación de Intervalos con exponente Intervalo
+    #    """       
+    #        
+    #    res = self.restringir_dominio()
+    #    
+    #    S = math.exp(otro.hi * math.log(res.lo)), math.exp(otro.lo * math.log(res.hi)) , math.exp(otro.lo * math.log(res.lo)), math.exp(otro.hi * math.log(res.hi))
+    #
+    #    returnreturn Intervalo(min(S), max(S))
+    
+    def pow_expint(self, otro):
+        """
+        Función exponienciación de Intervalos con exponente Intervalo
+        """       
+            
+        res = self.restringir_dominio()
+        
+        if otro.hi <= 0:
+            if res.hi <= 1:
+                return Intervalo(math.exp(otro.hi * math.log(res.hi)), math.exp(otro.lo * math.log(res.lo)))
+            
+            if res.lo <= 1 <= res.hi:
+                return Intervalo(math.exp(otro.lo * math.log(res.hi)), math.exp(otro.lo * math.log(res.lo)))
+            
+            if 1 <= res.lo:
+                return Intervalo(math.exp(otro.lo * math.log(res.hi)), math.exp(otro.hi * math.log(res.lo)))
+        
+        if otro.lo <= 0 <= otro.hi:
+            
+            if res.hi <= 1:
+                return Intervalo(math.exp(otro.hi * math.log(res.lo)), math.exp(otro.lo * math.log(res.lo)))
+            
+            if res.lo <= 1 <= res.hi:
+                return Intervalo(min( math.exp(otro.hi * math.log(res.lo)), math.exp(otro.lo * math.log(res.hi)) ), max( math.exp(otro.hi * np.log(res.hi)), math.exp(otro.lo * math.log(res.lo)) ))
+            
+            if 1 <= res.lo:
+                return Intervalo(math.exp(otro.lo * np.log(res.hi)), math.exp(otro.hi * math.log(res.hi)))
+            
+        if 0 <= otro.lo:
+            
+            if res.hi <= 1:
+                return Intervalo(math.exp(otro.hi * math.log(res.lo)), math.exp(otro.lo * math.log(res.hi)))
+            
+            if res.lo <= 1 <= res.hi:
+                return Intervalo(math.exp(otro.hi * math.log(res.lo)), math.exp(otro.hi * math.log(res.hi)))
+            
+            if 1 <= res.lo:
+                return Intervalo(math.exp(otro.lo * math.log(res.lo)), math.exp(otro.hi * math.log(res.hi)))
 
 
     def middle(self):
         """
         Calcula el punto medio del intervalo
         """
-        return (self.lo+self.hi)/2
+        return (self.lo+self.hi)/2.
         
     def radio(self):
         """
         Calcula el radio del intervalo
         """
-        return (self.hi-self.lo)/2
+        return (self.hi-self.lo)/2.
         
     def width(self):
         """
