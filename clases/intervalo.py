@@ -8,15 +8,15 @@ math = numpy    # NB!
 
 class Intervalo(object):
     """
-    Se define la clase 'Intervalo', y los m√©todos para la aritm√©tica b√°sica de intervalos,
-    es decir, suma, resta, multiplicaci√≥n y divisi√≥n. Se incluyen otras funciones
-    que ser√°n √∫tiles.
+    Se define la clase 'Intervalo', y los mÈtodos para la aritmÈtica b·sica de intervalos,
+    es decir, suma, resta, multiplicaciÛn y divisiÛn. Se incluyen otras funciones
+    que ser·n ˙tiles.
     """
     def __init__(self, lo, hi=None):
         """
         Definimos las propiedades del objeto Intervalo a partir de sus bordes,
-        lo y hi, donde lo <= hi. En el caso en que el intervalo s√≥lo tenga
-        un n√∫mero, √©ste se interpreta como un intervalo 'delgado' o 'degenerado'.
+        lo y hi, donde lo <= hi. En el caso en que el intervalo sÛlo tenga
+        un n˙mero, Èste se interpreta como un intervalo 'delgado' o 'degenerado'.
         """
         if hi is None:
             hi = lo
@@ -30,7 +30,7 @@ class Intervalo(object):
         return "Intervalo [{},{}]".format(self.lo,self.hi)
     
     def __str__(self):
-        # Esta funci√≥n sirve con 'print'
+        # Esta funciÛn sirve con 'print'
         return "[{},{}]".format(self.lo,self.hi)
 
     def _repr_html_(self):
@@ -41,7 +41,7 @@ class Intervalo(object):
     def _repr_latex_(self):
         return "$[{}, {}]$".format(self.lo, self.hi)
 
-    # Aqu√≠ vienen las operaciones aritm√©ticas
+    # AquÌ vienen las operaciones aritmÈticas
     def __add__(self, otro):
         """
         Suma de intervalos
@@ -103,7 +103,7 @@ class Intervalo(object):
     # √âsta es la funcion igualdad para intervalos
     def __eq__(self, otro):
         """
-        funci√≥n igualdad para intervalos 
+        funciÛn igualdad para intervalos 
 
         """
         try:
@@ -118,10 +118,10 @@ class Intervalo(object):
                 return False
   
 
-    # Intersecci√≥n
+    # IntersecciÛn
     def __and__(self, otro):
         """
-        Intersecci√≥n de intervalos
+        IntersecciÛn de intervalos
         Funciona con la sintaxis & (como el AND bitwise)
         """
         if not isinstance(otro,Intervalo):
@@ -135,7 +135,7 @@ class Intervalo(object):
             b = min( self.hi, otro.hi )
             return Intervalo(a,b)
     
-    # Intersecci√≥n por la izquierda
+    # IntersecciÛn por la izquierda
     def __rand__(self, otro):
         """
         Interseccion de intervalos (por la izquierda)
@@ -167,17 +167,17 @@ class Intervalo(object):
             
         return Intervalo.__sub__(otro, self)
     
-    # Funci√≥n contains
+    # FunciÛn contains
     def __contains__(self, otro):
         """
-        Devuelve un true o false si 'otro' est√° dentro del intervalo.
+        Devuelve un true o false si 'otro' est· dentro del intervalo.
         En el caso de que otro sea un intervalo, se requiere que todos sus elementos
-        est√©n dentro para regresar true.
+        estÈn dentro para regresar true.
         """
         return otro & self == otro 
         
             
-    # Funcion rec√≠proco
+    # Funcion recÌproco
     def reciprocal(self):
         """
         Devuelve un intervalo con los valores rec√≠procos
@@ -191,7 +191,7 @@ class Intervalo(object):
     # division con denominadores que no contienen al cero    
     def __div__(self, otro):
         """
-        Divisi√≥n
+        DivisiÛn
         """
         if not isinstance(otro, Intervalo):
             otro = Intervalo(otro)
@@ -202,10 +202,10 @@ class Intervalo(object):
         else:
             return self * otro.reciprocal()
     
-    # divisi√≥n reversa
+    # divisiÛn reversa
     def __rdiv__(self, otro):
         """
-        Divisi√≥n revrsa para poder usar floats en el numerador
+        DivisiÛn revrsa para poder usar floats en el numerador
         """
         if not isinstance(otro, Intervalo):
             otro = Intervalo(otro)
@@ -220,7 +220,7 @@ class Intervalo(object):
         
         if isinstance(alpha, int):
             # caso donde el exponente es entero, en este caso los flotantes que pueden ser
-            # igualados a su forma entera entran en esta categor√≠a (e.g. 2.0 == 2)
+            # igualados a su forma entera entran en esta categorÌa (e.g. 2.0 == 2)
             
             return self.pow_int(alpha)
             
@@ -235,7 +235,7 @@ class Intervalo(object):
 
     def pow_int(self, n):
         """
-        M√©todo para potencias enteras
+        MÈtodo para potencias enteras
         """
         # n: exponente
         if n > 0:
@@ -256,12 +256,12 @@ class Intervalo(object):
             restringido = self.restringir_dominio()
             
             return pow_int(restringido.reciprocal(), -n)
-            # Por si no queremos llamar a la recursi√≥n dejamos esto por aqu√≠
+            # Por si no queremos llamar a la recursiÛn dejamos esto por aquÌ
             # return Intervalo(self.reciprocal().lo**-n, self.reciprocal().hi**-n)
 
     def pow_real(self, n):
         """
-        M√©todo para potencias con exponentes reales (que en este caso son flotantes)
+        MÈtodo para potencias con exponentes reales (que en este caso son flotantes)
         f(x) = x^a = exp(a*log(x))
         """
         return exp(n*log(self))
@@ -300,10 +300,10 @@ class Intervalo(object):
                 return Intervalo(math.exp(otro.hi * math.log(res.lo)), math.exp(otro.lo * math.log(res.lo)))
             
             if res.lo <= 1 <= res.hi:
-                return Intervalo(min( math.exp(otro.hi * math.log(res.lo)), math.exp(otro.lo * math.log(res.hi)) ), max( math.exp(otro.hi * np.log(res.hi)), math.exp(otro.lo * math.log(res.lo)) ))
+                return Intervalo(min( math.exp(otro.hi * math.log(res.lo)), math.exp(otro.lo * math.log(res.hi)) ), max( math.exp(otro.hi * math.log(res.hi)), math.exp(otro.lo * math.log(res.lo)) ))
             
             if 1 <= res.lo:
-                return Intervalo(math.exp(otro.lo * np.log(res.hi)), math.exp(otro.hi * math.log(res.hi)))
+                return Intervalo(math.exp(otro.lo * math.log(res.hi)), math.exp(otro.hi * math.log(res.hi)))
             
         if 0 <= otro.lo:
             
@@ -341,36 +341,36 @@ class Intervalo(object):
         return max([abs(self.lo),abs(self.hi)])
 
     
-    # Relaci√≥n < de intervalos.
+    # RelaciÛn < de intervalos.
     def __lt__(self,otro):
-        """Relaci√≥n < de intervalos."""
+        """RelaciÛn < de intervalos."""
         
         try:
             return self.hi < otro.lo
         except:
             return self < Intervalo(otro)
 
-    # Relaci√≥n > de intervalos.
+    # RelaciÛn > de intervalos.
     def __gt__(self,otro):
-        """Relaci√≥n > de intervalos."""
+        """RelaciÛn > de intervalos."""
         
         try:
             return self.lo > otro.hi
         except:
             return self > Intervalo(otro)
 
-    #Relaci√≥n <= de intervalos.
+    #RelaciÛn <= de intervalos.
     def __le__(self,otro):
-        """Relaci√≥n <= de intervalos"""
+        """RelaciÛn <= de intervalos"""
     
         try: 
             return (self.lo <= otro.lo) and self.hi <= otro.hi  
         except: 
             return self <= Intervalo(otro)
 
-    #Relaci√≥n >= de intervalos.
+    #RelaciÛn >= de intervalos.
     def __ge__(self,otro):
-        """Relaci√≥n >= de intervalos"""
+        """RelaciÛn >= de intervalos"""
     
         try:
             return (self.lo >= otro.lo) and self.hi >= otro.hi
@@ -380,9 +380,9 @@ class Intervalo(object):
     def hull(self, otro):
         return Intervalo(min(self.lo,otro.lo),max(self.hi,otro.hi))
 
-    # Aqu√≠ se definir√°n funciones sobre intervalos
+    # AquÌ se definir·n funciones sobre intervalos
 
-    ## NOTA: Implementaci√≥n de David et al; me voy por la de AsTlan porque pasa
+    ## NOTA: ImplementaciÛn de David et al; me voy por la de AsTlan porque pasa
     ## un test correcto que la de David et al no pasa.
     #def cos(self):
     #
@@ -445,7 +445,7 @@ class Intervalo(object):
         
     def tan(self):
         """
-        Funci√≥n tangente para intervalos
+        FunciÛn tangente para intervalos
         """
         #from scipy import inf
         pi = math.pi        
@@ -462,7 +462,7 @@ class Intervalo(object):
        
     def restringir_dominio(self, dominio=None):
         """
-        Funci√≥n que restringe el dominio de un intervalo a valores no negativos.
+        FunciÛn que restringe el dominio de un intervalo a valores no negativos.
         Levanta un error si el intervalo es completamente negativo.
         """
 
