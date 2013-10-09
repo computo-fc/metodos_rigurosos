@@ -363,20 +363,20 @@ def test_exp():
     num,num2 = TwoReals()
     a = Intervalo(num,num2)
 
-    result = np.exp(a)
+    result = a.exp()
 
     assert result.lo == np.exp(a.lo) and result.hi == np.exp(a.hi)
-    assert np.log(result) == a
+    print a, result
+    assert result.log() == a
 
 
-# def test_log():
-#     num = np.random.uniform(0,10.0)
-#     num2 = np.random.uniform(0,10.0)
-#     a = Intervalo(num,num2)
-#    
-#     result = log(a)
-#
-#     assert result.lo == np.log(a.lo) and result.hi == np.log(a.hi)
+def test_log():
+    num = np.random.uniform(0,10.0)
+    num2 = np.random.uniform(0,10.0)
+    a = Intervalo(num,num2)
+   
+    result = a.log()
+    assert result.lo == np.log(a.lo) and result.hi == np.log(a.hi)
 
 #### OJO: HAY PROBLEMAS DE INDENTACION
 #@raises(ValueError)
