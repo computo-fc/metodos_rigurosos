@@ -273,7 +273,7 @@ class Intervalo(object):
     #        
     #    res = self.restringir_dominio()
     #    
-    #    S = math.exp(otro.hi * math.log(res.lo)), math.exp(otro.lo * math.log(res.hi)) , math.exp(otro.lo * math.log(res.lo)), math.exp(otro.hi * np.log(res.hi))
+    #    S = math.exp(otro.hi * math.log(res.lo)), math.exp(otro.lo * math.log(res.hi)) , math.exp(otro.lo * math.log(res.lo)), math.exp(otro.hi * math.log(res.hi))
     #
     #    returnreturn Intervalo(min(S), max(S))
     
