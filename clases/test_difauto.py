@@ -125,7 +125,7 @@ def test_log():
     
     for k in range(0,100):
     
-        num,num2=Real(1.0,100.0),Real(-100.0,100.0)
+        num,num2=Real(1.0,100.0), Real(-100.0,100.0)
     
         a=math.log(DifAuto(num,num2))
     
@@ -135,7 +135,6 @@ def test_exp():
     '''
     Test de funcion exponencial para la clase jet
     '''    
-    
     
     for k in range(0,100):
     
@@ -147,7 +146,6 @@ def test_exp():
 
     
 def test_sin():
-    
     '''
     test del coseno para jets: 101 eventos con jets aleatorios
     '''
@@ -160,7 +158,6 @@ def test_sin():
         assert a.valor==math.sin(num) and a.deriv==math.cos(num)
     
 def test_cos():
-    
     '''
     test del coseno para jets: 101 eventos con jets aleatorios
     '''
@@ -173,8 +170,7 @@ def test_cos():
         assert a.valor==math.cos(num) and a.deriv==-math.sin(num)
         
         
-def All_tests():
-    
+def All_tests():    
     '''
     Se corren todos los test de la clase jet
     '''
