@@ -255,10 +255,8 @@ class Intervalo(object):
             # por lo que primero restringiremos el intervalo a reales positivos
             restringido = self.restringir_dominio()
             
-            return pow_int(restringido.reciprocal(), -n)
-            # Por si no queremos llamar a la recursión dejamos esto por aquí
-            # return Intervalo(self.reciprocal().lo**-n, self.reciprocal().hi**-n)
-
+            return (restringido.reciprocal()).pow_int(-n)
+            
     def pow_real(self, n):
         """
         Método para potencias con exponentes reales (que en este caso son flotantes)
